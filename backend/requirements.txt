@@ -20,3 +20,8 @@ asyncio==3.4.3
 aiofiles==23.2.1
 redis==5.0.1
 celery==5.3.6
+rapidfuzz==3.6.1
+vt-py==0.18.4
+ipwhois==1.2.0
+python-Levenshtein==0.25.0
+tldextract==5.1.1

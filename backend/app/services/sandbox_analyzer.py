@@ -10,6 +10,7 @@ from urllib.parse import urlparse
 from playwright.async_api import async_playwright, TimeoutError as PlaywrightTimeout
 import requests
 from bs4 import BeautifulSoup
+from .advanced_phishing_detector import AdvancedPhishingDetector
 
 class SandboxAnalyzer:
     """
@@ -26,6 +27,7 @@ class SandboxAnalyzer:
     def __init__(self, timeout: int = 30):
         self.timeout = timeout * 1000  # Convert to milliseconds for Playwright
         self.user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+        self.phishing_detector = AdvancedPhishingDetector()
     
     def _is_trusted_domain(self, domain: str) -> bool:
         """Check if domain is in trusted list"""
@@ -80,12 +82,46 @@ class SandboxAnalyzer:
                         "error": "Site only supports HTTP (HTTPS failed)"
                     }
             
+            # === ADVANCED PHISHING DETECTION ===
+            
+            # 1. URL Structure Analysis
+            url_structure = self.phishing_detector.analyze_url_structure(url)
+            
+            # 2. Typosquatting Detection
+            typosquatting = self.phishing_detector.detect_typosquatting(domain)
+            
+            # 3. Content Analysis (NLP)
+            page_text = browser_analysis.get("content_snippet", "")
+            page_title = browser_analysis.get("page_title", "")
+            content_analysis = self.phishing_detector.analyze_page_content_nlp(page_text, page_title)
+            
+            # 4. Domain Reputation Check
+            reputation = await self.phishing_detector.check_domain_reputation(domain)
+            
+            # 5. IP Reputation
+            ip_reputation = self.phishing_detector.get_ip_reputation(domain)
+            
+            # 6. Generate Comprehensive Review
+            website_review = self.phishing_detector.generate_website_review(
+                url_analysis=url_structure,
+                typosquatting=typosquatting,
+                content_analysis=content_analysis,
+                reputation=reputation,
+                domain_age_days=domain_analysis.get("age_days"),
+                ssl_valid=ssl_analysis.get("valid", False),
+                login_forms=browser_analysis.get("login_forms", False)
+            )
+            
             # Calculate safety score (with HTTP-only penalty if applicable)
             safety_score = self._calculate_safety_score(
                 ssl_analysis,
                 domain_analysis,
                 browser_analysis,
-                https_failed
+                https_failed,
+                url_structure,
+                typosquatting,
+                content_analysis,
+                reputation
             )
             
             # Determine verdict
@@ -96,6 +132,19 @@ class SandboxAnalyzer:
             if https_failed:
                 suspicious_behaviors.insert(0, "⚠️ WARNING: Site only supports HTTP (HTTPS failed) - No encryption!")
             
+            # Add advanced detection warnings
+            if typosquatting.get("is_typosquatting"):
+                suspicious_behaviors.insert(0, typosquatting.get("warning", "Typosquatting detected"))
+            
+            if url_structure.get("structure_risk_score", 0) >= 25:
+                suspicious_behaviors.append(f"Suspicious URL structure (risk: {url_structure['structure_risk_score']}/100)")
+            
+            if content_analysis.get("phishing_score", 0) >= 30:
+                suspicious_behaviors.append(f"Phishing-like content detected (score: {content_analysis['phishing_score']}/100)")
+            
+            if reputation.get("is_malicious"):
+                suspicious_behaviors.insert(0, f"⚠️ FLAGGED by {len(reputation.get('threat_sources', []))} security vendors")
+            
             execution_time = time.time() - start_time
             
             return {
@@ -105,22 +154,30 @@ class SandboxAnalyzer:
                 
                 # SSL Analysis
                 "ssl_valid": ssl_analysis.get("valid", False),
-                "ssl_issuer": ssl_analysis.get("issuer"),
-                "ssl_expiration": ssl_analysis.get("expiration"),
-                "ssl_security_level": ssl_analysis.get("security_level"),
+                "ssl_issuer": ssl_analysis.get("issuer", "Unknown"),
+                "ssl_expiration": ssl_analysis.get("expiration", "Unknown"),
+                "ssl_security_level": ssl_analysis.get("security_level", "unknown"),
                 
-                # Domain Analysis
+                # Domain Analysis (Enhanced)
                 "domain_age_days": domain_analysis.get("age_days"),
-                "domain_registrar": domain_analysis.get("registrar"),
-                "domain_country": domain_analysis.get("country"),
-                "domain_creation_date": domain_analysis.get("creation_date"),
+                "domain_registrar": domain_analysis.get("registrar", "Unknown"),
+                "domain_country": domain_analysis.get("country", "Unknown"),
+                "domain_creation_date": domain_analysis.get("creation_date", "Unknown"),
+                
+                # Advanced Detection Results
+                "url_structure_analysis": url_structure,
+                "typosquatting_detection": typosquatting,
+                "content_nlp_analysis": content_analysis,
+                "domain_reputation": reputation,
+                "ip_reputation": ip_reputation,
+                "website_review": website_review,
                 
                 # Browser Analysis
                 "redirect_chain": browser_analysis.get("redirect_chain", []),
                 "redirect_count": len(browser_analysis.get("redirect_chain", [])),
                 "final_url": browser_analysis.get("final_url"),
-                "page_title": browser_analysis.get("page_title"),
-                "page_content_snippet": browser_analysis.get("content_snippet"),
+                "page_title": browser_analysis.get("page_title", "N/A"),
+                "page_content_snippet": browser_analysis.get("content_snippet", "No content available"),
                 "detected_scripts": browser_analysis.get("scripts", []),
                 "script_threats": browser_analysis.get("script_threats", []),
                 "login_forms_detected": browser_analysis.get("login_forms", False),
@@ -419,9 +476,13 @@ class SandboxAnalyzer:
         ssl_analysis: Dict,
         domain_analysis: Dict,
         browser_analysis: Dict,
-        https_failed: bool = False
+        https_failed: bool = False,
+        url_structure: Dict = None,
+        typosquatting: Dict = None,
+        content_analysis: Dict = None,
+        reputation: Dict = None
     ) -> float:
-        """Calculate overall safety score (0.0 = dangerous, 1.0 = safe)"""
+        """Calculate overall safety score (0.0 = dangerous, 1.0 = safe) with advanced detection"""
         
         # Start with base score
         score = 1.0
@@ -436,9 +497,41 @@ class SandboxAnalyzer:
                     return max(0.65, score - 0.2)  # Even trusted domains lose points for HTTP-only
                 return max(0.85, score)  # Always at least 0.85 for trusted domains
         
+        # === CRITICAL THREATS (Immediate major penalties) ===
+        
+        # Domain Reputation - CRITICAL
+        if reputation and reputation.get("is_malicious"):
+            score -= 0.5  # Flagged by security vendors = major red flag
+        
+        # Typosquatting - HIGH RISK
+        if typosquatting and typosquatting.get("is_typosquatting"):
+            risk_level = typosquatting.get("risk_level")
+            if risk_level == "critical":
+                score -= 0.45
+            elif risk_level == "high":
+                score -= 0.35
+            elif risk_level == "medium":
+                score -= 0.2
+        
         # CRITICAL: HTTP-only sites (HTTPS failed) are a major security issue
         if https_failed:
             score -= 0.4  # Heavy penalty for not supporting HTTPS
+        
+        # === ADVANCED DETECTION PENALTIES ===
+        
+        # URL Structure Analysis
+        if url_structure:
+            structure_risk = url_structure.get("structure_risk_score", 0)
+            # Normalize to 0-0.3 range
+            score -= min(structure_risk / 100 * 0.3, 0.3)
+        
+        # Content Analysis (NLP)
+        if content_analysis:
+            content_risk = content_analysis.get("phishing_score", 0)
+            # Normalize to 0-0.35 range
+            score -= min(content_risk / 100 * 0.35, 0.35)
+        
+        # === STANDARD CHECKS ===
         
         # SSL issues - only penalize if clearly invalid, not if check failed
         if ssl_analysis.get("security_level") == "none":
