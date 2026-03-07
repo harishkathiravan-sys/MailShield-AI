@@ -1,0 +1,253 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-cyber-darker text-gray-100 antialiased;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+      sans-serif;
+    overflow-x: hidden;
+  }
+}
+
+@layer components {
+  .cyber-input {
+    @apply w-full px-4 py-3 bg-cyber-dark border border-cyber-blue/30 rounded-lg
+           text-gray-100 placeholder-gray-500 focus:outline-none focus:border-cyber-blue
+           focus:ring-2 focus:ring-cyber-blue/20 transition-all duration-300;
+  }
+
+  .cyber-button {
+    @apply px-6 py-3 bg-gradient-to-r from-cyber-blue to-cyber-purple rounded-lg
+           font-semibold text-white shadow-lg hover:shadow-cyber-blue/50
+           transform hover:scale-105 transition-all duration-300 cursor-pointer
+           relative z-10;
+  }
+
+  .cyber-button-secondary {
+    @apply px-6 py-3 bg-cyber-dark border border-cyber-blue rounded-lg
+           font-semibold text-cyber-blue hover:bg-cyber-blue/10
+           transition-all duration-300 cursor-pointer relative z-10;
+  }
+
+  .cyber-card {
+    @apply bg-cyber-dark/80 backdrop-blur-sm border border-cyber-blue/20 rounded-xl p-6
+           shadow-xl hover:shadow-cyber-blue/20 transition-all duration-300 relative z-10;
+  }
+
+  .threat-badge-safe {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-medium
+           bg-cyber-green/20 text-cyber-green border border-cyber-green/30;
+  }
+
+  .threat-badge-suspicious {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-medium
+           bg-yellow-500/20 text-yellow-400 border border-yellow-500/30;
+  }
+
+  .threat-badge-phishing {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-medium
+           bg-orange-500/20 text-orange-400 border border-orange-500/30;
+  }
+
+  .threat-badge-malicious {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-medium
+           bg-cyber-red/20 text-cyber-red border border-cyber-red/30;
+  }
+
+  .gradient-text {
+    @apply bg-gradient-to-r from-cyber-blue via-cyber-purple to-cyber-pink
+           bg-clip-text text-transparent;
+  }
+
+  .cyber-glow {
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+  }
+
+  .scanning-line {
+    @apply absolute left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-cyber-blue to-transparent;
+    animation: scan 2s linear infinite;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0e27;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #00d4ff;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #00a8cc;
+}
+
+/* Scanning beam animation */
+@keyframes float {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.4;
+  }
+  25% {
+    transform: translate(20px, -30px) scale(1.2);
+    opacity: 0.7;
+  }
+  50% {
+    transform: translate(-15px, -60px) scale(0.9);
+    opacity: 0.3;
+  }
+  75% {
+    transform: translate(-25px, -30px) scale(1.1);
+    opacity: 0.6;
+  }
+}
+
+@keyframes data-stream {
+  0% {
+    transform: translateY(-100px);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.5;
+  }
+  90% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateY(100vh);
+    opacity: 0;
+  }
+}
+
+@keyframes scan {
+  0% {
+    top: 0%;
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.4;
+  }
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+
+@keyframes gradient {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient 15s ease infinite;
+}
+
+@keyframes grid-move {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(50px, 50px);
+  }
+}
+
+@keyframes scanBeam {
+  0% {
+    transform: translateX(-100%) scaleX(0);
+  }
+  50% {
+    transform: translateX(50%) scaleX(1);
+  }
+  100% {
+    transform: translateX(200%) scaleX(0);
+  }
+}
+
+.scan-beam {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #00d4ff, transparent);
+  pointer-events: none;
+  z-index: 5;
+  animation: scanBeam 8s ease-in-out infinite;
+  opacity: 0.3;
+}
+
+/* Data matrix rain effect for text */
+@keyframes matrix-rain {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh);
+    opacity: 0;
+  }
+}
+
+/* Glitch effect */
+@keyframes glitch {
+  0% {
+    transform: translate(0);
+  }
+  20% {
+    transform: translate(-2px, 2px);
+  }
+  40% {
+    transform: translate(-2px, -2px);
+  }
+  60% {
+    transform: translate(2px, 2px);
+  }
+  80% {
+    transform: translate(2px, -2px);
+  }
+  100% {
+    transform: translate(0);
+  }
+}
+
+/* Pulse glow animation */
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(0, 212, 255, 0.3),
+                0 0 10px rgba(0, 212, 255, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.6),
+                0 0 30px rgba(0, 212, 255, 0.4);
+  }
+}
+
+.pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* Performance optimization */
+.gpu-accelerated {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
