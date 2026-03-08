@@ -81,7 +81,21 @@ async def analyze_url_in_sandbox(
             form_actions=result.get("form_actions", []),
             cookies_set=result.get("cookies_set", []),
             tracking_cookies=result.get("tracking_cookies", 0),
+            total_cookies=result.get("total_cookies", 0),
+            advertising_cookies=result.get("advertising_cookies", 0),
+            analytics_cookies=result.get("analytics_cookies", 0),
+            functional_cookies=result.get("functional_cookies", 0),
+            session_cookies=result.get("session_cookies", 0),
+            persistent_cookies=result.get("persistent_cookies", 0),
+            third_party_cookies=result.get("third_party_cookies", 0),
+            tracking_cookie_details=result.get("tracking_cookie_details", []),
+            advertising_cookie_details=result.get("advertising_cookie_details", []),
+            analytics_cookie_details=result.get("analytics_cookie_details", []),
             third_party_trackers=result.get("third_party_trackers", []),
+            analytics_services=result.get("analytics_services", []),
+            ad_networks=result.get("ad_networks", []),
+            social_trackers=result.get("social_trackers", []),
+            page_metadata=result.get("page_metadata", {}),
             auto_downloads=result.get("auto_downloads", False),
             download_files=result.get("download_files", []),
             external_requests=result.get("external_requests", []),
@@ -170,8 +184,28 @@ async def get_sandbox_report(
         # Cookie & Tracking Analysis
         "tracking_analysis": {
             "cookies": report.cookies_set,
-            "tracking_cookie_count": report.tracking_cookies,
-            "third_party_trackers": report.third_party_trackers
+            "total_cookies": getattr(report, 'total_cookies', 0),
+            "tracking_cookies": getattr(report, 'tracking_cookies', 0),
+            "advertising_cookies": getattr(report, 'advertising_cookies', 0),
+            "analytics_cookies": getattr(report, 'analytics_cookies', 0),
+            "functional_cookies": getattr(report, 'functional_cookies', 0),
+            "session_cookies": getattr(report, 'session_cookies', 0),
+            "persistent_cookies": getattr(report, 'persistent_cookies', 0),
+            "third_party_cookies": getattr(report, 'third_party_cookies', 0),
+            "tracking_cookie_details": getattr(report, 'tracking_cookie_details', []),
+            "advertising_cookie_details": getattr(report, 'advertising_cookie_details', []),
+            "analytics_cookie_details": getattr(report, 'analytics_cookie_details', []),
+            "third_party_trackers": report.third_party_trackers,
+            "analytics_services": getattr(report, 'analytics_services', []),
+            "ad_networks": getattr(report, 'ad_networks', []),
+            "social_trackers": getattr(report, 'social_trackers', [])
+        },
+        
+        # Page Information
+        "page_information": {
+            "title": report.page_title,
+            "content_preview": report.page_content_snippet[:200] if report.page_content_snippet else "No content available",
+            "metadata": getattr(report, 'page_metadata', {})
         },
         
         # Behavioral Analysis
@@ -237,7 +271,21 @@ async def batch_analyze_urls(
                 form_actions=result.get("form_actions", []),
                 cookies_set=result.get("cookies_set", []),
                 tracking_cookies=result.get("tracking_cookies", 0),
+                total_cookies=result.get("total_cookies", 0),
+                advertising_cookies=result.get("advertising_cookies", 0),
+                analytics_cookies=result.get("analytics_cookies", 0),
+                functional_cookies=result.get("functional_cookies", 0),
+                session_cookies=result.get("session_cookies", 0),
+                persistent_cookies=result.get("persistent_cookies", 0),
+                third_party_cookies=result.get("third_party_cookies", 0),
+                tracking_cookie_details=result.get("tracking_cookie_details", []),
+                advertising_cookie_details=result.get("advertising_cookie_details", []),
+                analytics_cookie_details=result.get("analytics_cookie_details", []),
                 third_party_trackers=result.get("third_party_trackers", []),
+                analytics_services=result.get("analytics_services", []),
+                ad_networks=result.get("ad_networks", []),
+                social_trackers=result.get("social_trackers", []),
+                page_metadata=result.get("page_metadata", {}),
                 suspicious_behaviors=result.get("suspicious_behaviors", []),
                 error_message=result.get("error_message")
             )

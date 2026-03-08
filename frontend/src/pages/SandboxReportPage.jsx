@@ -344,25 +344,124 @@ const SandboxReportPage = () => {
             Cookie & Tracking Analysis
           </h3>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          {/* Cookie Statistics */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
             <InfoCard
               label="Total Cookies"
-              value={report.tracking_analysis.cookies?.length || 0}
+              value={report.tracking_analysis.total_cookies || 0}
             />
             <InfoCard
               label="Tracking Cookies"
-              value={report.tracking_analysis.tracking_cookie_count || 0}
-              alert={report.tracking_analysis.tracking_cookie_count > 5}
+              value={report.tracking_analysis.tracking_cookies || 0}
+              alert={report.tracking_analysis.tracking_cookies > 5}
+            />
+            <InfoCard
+              label="Advertising Cookies"
+              value={report.tracking_analysis.advertising_cookies || 0}
+              alert={report.tracking_analysis.advertising_cookies > 3}
+            />
+            <InfoCard
+              label="Analytics Cookies"
+              value={report.tracking_analysis.analytics_cookies || 0}
             />
           </div>
 
+          {/* Cookie Breakdown */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+            <div className="p-3 bg-cyber-bg border border-cyber-blue/20 rounded-lg">
+              <div className="text-xs text-gray-400">Functional</div>
+              <div className="text-lg font-semibold text-green-400">
+                {report.tracking_analysis.functional_cookies || 0}
+              </div>
+            </div>
+            <div className="p-3 bg-cyber-bg border border-cyber-blue/20 rounded-lg">
+              <div className="text-xs text-gray-400">Session</div>
+              <div className="text-lg font-semibold text-blue-400">
+                {report.tracking_analysis.session_cookies || 0}
+              </div>
+            </div>
+            <div className="p-3 bg-cyber-bg border border-cyber-blue/20 rounded-lg">
+              <div className="text-xs text-gray-400">Persistent</div>
+              <div className="text-lg font-semibold text-purple-400">
+                {report.tracking_analysis.persistent_cookies || 0}
+              </div>
+            </div>
+            <div className="p-3 bg-cyber-bg border border-cyber-blue/20 rounded-lg">
+              <div className="text-xs text-gray-400">Third-Party</div>
+              <div className="text-lg font-semibold text-yellow-400">
+                {report.tracking_analysis.third_party_cookies || 0}
+              </div>
+            </div>
+          </div>
+
+          {/* Tracking Technologies */}
+          {(report.tracking_analysis.analytics_services?.length > 0 || 
+            report.tracking_analysis.ad_networks?.length > 0 ||
+            report.tracking_analysis.social_trackers?.length > 0) && (
+            <div className="mb-6">
+              <h4 className="text-sm font-semibold text-gray-300 mb-3">
+                Tracking Technologies Detected:
+              </h4>
+              <div className="space-y-3">
+                {report.tracking_analysis.analytics_services?.length > 0 && (
+                  <div>
+                    <div className="text-xs text-gray-400 mb-2">Analytics Services:</div>
+                    <div className="flex flex-wrap gap-2">
+                      {report.tracking_analysis.analytics_services.map((service, index) => (
+                        <span
+                          key={index}
+                          className="px-3 py-1 bg-blue-500/20 text-blue-400 rounded-full text-xs border border-blue-500/30"
+                        >
+                          📊 {service}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                
+                {report.tracking_analysis.ad_networks?.length > 0 && (
+                  <div>
+                    <div className="text-xs text-gray-400 mb-2">Ad Networks:</div>
+                    <div className="flex flex-wrap gap-2">
+                      {report.tracking_analysis.ad_networks.map((network, index) => (
+                        <span
+                          key={index}
+                          className="px-3 py-1 bg-orange-500/20 text-orange-400 rounded-full text-xs border border-orange-500/30"
+                        >
+                          📢 {network}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                
+                {report.tracking_analysis.social_trackers?.length > 0 && (
+                  <div>
+                    <div className="text-xs text-gray-400 mb-2">Social Media Trackers:</div>
+                    <div className="flex flex-wrap gap-2">
+                      {report.tracking_analysis.social_trackers.map((tracker, index) => (
+                        <span
+                          key={index}
+                          className="px-3 py-1 bg-purple-500/20 text-purple-400 rounded-full text-xs border border-purple-500/30"
+                        >
+                          👥 {tracker}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Third-Party Trackers */}
           {report.tracking_analysis.third_party_trackers?.length > 0 && (
             <div>
-              <h4 className="text-sm font-semibold text-gray-400 mb-2">
-                Third-Party Trackers:
+              <h4 className="text-sm font-semibold text-gray-300 mb-2">
+                Third-Party Tracking Domains ({report.tracking_analysis.third_party_trackers.length}):
               </h4>
               <div className="flex flex-wrap gap-2">
-                {report.tracking_analysis.third_party_trackers.map((tracker, index) => (
+                {report.tracking_analysis.third_party_trackers.slice(0, 10).map((tracker, index) => (
                   <span
                     key={index}
                     className="px-3 py-1 bg-yellow-500/20 text-yellow-400 rounded-full text-xs border border-yellow-500/30"
@@ -370,6 +469,11 @@ const SandboxReportPage = () => {
                     {tracker}
                   </span>
                 ))}
+                {report.tracking_analysis.third_party_trackers.length > 10 && (
+                  <span className="px-3 py-1 text-gray-400 text-xs">
+                    +{report.tracking_analysis.third_party_trackers.length - 10} more
+                  </span>
+                )}
               </div>
             </div>
           )}
@@ -387,20 +491,173 @@ const SandboxReportPage = () => {
             Page Information
           </h3>
 
-          <div className="space-y-3">
-            <div>
-              <div className="text-sm text-gray-400 mb-1">Page Title:</div>
-              <div className="text-gray-300">{report.page_analysis.title || 'N/A'}</div>
-            </div>
-            <div>
-              <div className="text-sm text-gray-400 mb-1">Content Preview:</div>
-              <div className="text-sm text-gray-300 p-3 bg-cyber-bg border border-cyber-blue/20 rounded-lg">
-                {report.page_analysis.content_snippet || 'No content available'}
+          <div className="space-y-4">
+            {/* Basic Info */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <div className="text-sm text-gray-400 mb-1">Page Title:</div>
+                <div className="text-gray-300 font-medium">
+                  {report.page_information?.title || report.page_analysis?.title || 'N/A'}
+                </div>
+              </div>
+              <div>
+                <div className="text-sm text-gray-400 mb-1">Analysis Time:</div>
+                <div className="text-gray-300 font-medium">{report.execution_time.toFixed(2)}s</div>
               </div>
             </div>
+
+            {/* HTTP Response Information */}
+            {report.page_information?.metadata && (
+              <div>
+                <div className="text-sm text-gray-400 mb-2">Server Response:</div>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  {report.page_information.metadata.http_status && report.page_information.metadata.http_status !== 'Unknown' && (
+                    <div className="p-3 bg-cyber-bg border border-cyber-blue/20 rounded-lg">
+                      <div className="text-xs text-gray-400">HTTP Status</div>
+                      <div className={`text-lg font-semibold ${
+                        report.page_information.metadata.http_status < 300 ? 'text-green-400' : 
+                        report.page_information.metadata.http_status < 400 ? 'text-yellow-400' : 'text-red-400'
+                      }`}>
+                        {report.page_information.metadata.http_status}
+                      </div>
+                    </div>
+                  )}
+                  {report.page_information.metadata.server && report.page_information.metadata.server !== 'Unknown' && (
+                    <div className="p-3 bg-cyber-bg border border-cyber-blue/20 rounded-lg">
+                      <div className="text-xs text-gray-400">Server</div>
+                      <div className="text-sm font-semibold text-cyan-400 truncate">
+                        {report.page_information.metadata.server}
+                      </div>
+                    </div>
+                  )}
+                  {report.page_information.metadata.url_scheme && (
+                    <div className="p-3 bg-cyber-bg border border-cyber-blue/20 rounded-lg">
+                      <div className="text-xs text-gray-400">Protocol</div>
+                      <div className={`text-lg font-semibold ${
+                        report.page_information.metadata.url_scheme === 'HTTPS' ? 'text-green-400' : 'text-yellow-400'
+                      }`}>
+                        {report.page_information.metadata.url_scheme}
+                      </div>
+                    </div>
+                  )}
+                  {report.page_information.metadata.content_type && report.page_information.metadata.content_type !== 'Unknown' && (
+                    <div className="p-3 bg-cyber-bg border border-cyber-blue/20 rounded-lg">
+                      <div className="text-xs text-gray-400">Content Type</div>
+                      <div className="text-xs font-semibold text-purple-400 truncate" title={report.page_information.metadata.content_type}>
+                        {report.page_information.metadata.content_type.split(';')[0]}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* URL Information */}
+            {report.page_information?.metadata?.final_url && (
+              <div>
+                <div className="text-sm text-gray-400 mb-1">Final URL:</div>
+                <div className="text-sm text-cyan-400 p-2 bg-cyber-bg border border-cyber-blue/20 rounded-lg break-all font-mono">
+                  {report.page_information.metadata.final_url}
+                </div>
+              </div>
+            )}
+
+            {/* Metadata */}
+            {report.page_information?.metadata && (
+              <div className="space-y-3">
+                {report.page_information.metadata.description && report.page_information.metadata.description !== 'N/A' && (
+                  <div>
+                    <div className="text-sm text-gray-400 mb-1">Description:</div>
+                    <div className="text-sm text-gray-300 p-3 bg-cyber-bg border border-cyber-blue/20 rounded-lg">
+                      {report.page_information.metadata.description}
+                    </div>
+                  </div>
+                )}
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {report.page_information.metadata.language && report.page_information.metadata.language !== 'N/A' && (
+                    <div>
+                      <div className="text-sm text-gray-400 mb-1">Language:</div>
+                      <div className="text-gray-300">{report.page_information.metadata.language}</div>
+                    </div>
+                  )}
+                  {report.page_information.metadata.charset && report.page_information.metadata.charset !== 'N/A' && (
+                    <div>
+                      <div className="text-sm text-gray-400 mb-1">Character Encoding:</div>
+                      <div className="text-gray-300">{report.page_information.metadata.charset}</div>
+                    </div>
+                  )}
+                  {report.page_information.metadata.author && report.page_information.metadata.author !== 'N/A' && (
+                    <div>
+                      <div className="text-sm text-gray-400 mb-1">Author:</div>
+                      <div className="text-gray-300">{report.page_information.metadata.author}</div>
+                    </div>
+                  )}
+                  {report.page_information.metadata.viewport && report.page_information.metadata.viewport !== 'N/A' && (
+                    <div>
+                      <div className="text-sm text-gray-400 mb-1">Viewport:</div>
+                      <div className="text-gray-300 text-xs">{report.page_information.metadata.viewport}</div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Resource Counts */}
+                {(report.page_information.metadata.image_count >= 0 || 
+                  report.page_information.metadata.script_count >= 0 ||
+                  report.page_information.metadata.stylesheet_count >= 0) && (
+                  <div>
+                    <div className="text-sm text-gray-400 mb-2">Page Resources:</div>
+                    <div className="grid grid-cols-3 gap-3">
+                      <div className="p-3 bg-cyber-bg border border-cyber-blue/20 rounded-lg text-center">
+                        <div className="text-xs text-gray-400">Images</div>
+                        <div className="text-lg font-semibold text-cyan-400">
+                          {report.page_information.metadata.image_count || 0}
+                        </div>
+                      </div>
+                      <div className="p-3 bg-cyber-bg border border-cyber-blue/20 rounded-lg text-center">
+                        <div className="text-xs text-gray-400">Scripts</div>
+                        <div className="text-lg font-semibold text-purple-400">
+                          {report.page_information.metadata.script_count || 0}
+                        </div>
+                      </div>
+                      <div className="p-3 bg-cyber-bg border border-cyber-blue/20 rounded-lg text-center">
+                        <div className="text-xs text-gray-400">Stylesheets</div>
+                        <div className="text-lg font-semibold text-pink-400">
+                          {report.page_information.metadata.stylesheet_count || 0}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Technologies Detected */}
+                {report.page_information.metadata.technologies?.length > 0 && 
+                 report.page_information.metadata.technologies[0] !== 'None detected' && (
+                  <div>
+                    <div className="text-sm text-gray-400 mb-2">Technologies Detected:</div>
+                    <div className="flex flex-wrap gap-2">
+                      {report.page_information.metadata.technologies.map((tech, index) => (
+                        <span
+                          key={index}
+                          className="px-3 py-1 bg-green-500/20 text-green-400 rounded-full text-xs border border-green-500/30"
+                        >
+                          ⚡ {tech}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Content Preview */}
             <div>
-              <div className="text-sm text-gray-400 mb-1">Analysis Time:</div>
-              <div className="text-gray-300">{report.execution_time.toFixed(2)}s</div>
+              <div className="text-sm text-gray-400 mb-1">Content Preview:</div>
+              <div className="text-sm text-gray-300 p-3 bg-cyber-bg border border-cyber-blue/20 rounded-lg max-h-32 overflow-y-auto">
+                {report.page_information?.content_preview || 
+                 report.page_analysis?.content_snippet || 
+                 'No content available'}
+              </div>
             </div>
           </div>
         </motion.div>

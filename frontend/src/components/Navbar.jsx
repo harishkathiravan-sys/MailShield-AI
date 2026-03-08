@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Shield, Activity, BarChart3, Home } from 'lucide-react';
+import { Shield, Activity, BarChart3, Home, FileText } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const Navbar = () => {
@@ -34,6 +34,12 @@ const Navbar = () => {
               icon={Activity}
               label="Analyze"
               active={isActive('/analyze')}
+            />
+            <NavLink
+              to="/email-source"
+              icon={FileText}
+              label="Email Source"
+              active={isActive('/email-source')}
             />
             <NavLink
               to="/dashboard"

@@ -394,7 +394,7 @@ class AdvancedPhishingDetector:
     
     def get_ip_reputation(self, domain: str) -> Dict:
         """
-        Get IP and ASN reputation information
+        Get IP and geolocation information
         """
         try:
             ip_address = socket.gethostbyname(domain)
@@ -403,18 +403,69 @@ class AdvancedPhishingDetector:
             is_private = self._is_private_ip(ip_address)
             is_cloud = self._is_cloud_provider_ip(ip_address)
             
+            # Get geolocation for the IP (using free ip-api.com service)
+            geolocation = self._get_ip_geolocation(ip_address)
+            
             return {
                 "ip_address": ip_address,
                 "is_private_ip": is_private,
                 "is_cloud_provider": is_cloud,
-                "risk_level": "high" if is_private else "low" if is_cloud else "medium"
+                "risk_level": "high" if is_private else "low" if is_cloud else "medium",
+                "geolocation": geolocation
             }
             
         except Exception as e:
             return {
                 "ip_address": None,
                 "error": str(e),
-                "risk_level": "unknown"
+                "risk_level": "unknown",
+                "geolocation": None
+            }
+    
+    def _get_ip_geolocation(self, ip_address: str) -> Dict:
+        """
+        Get geolocation data for an IP address using ip-api.com (free service)
+        """
+        try:
+            # Skip geolocation for private IPs
+            if self._is_private_ip(ip_address):
+                return {
+                    "country": "Private Network",
+                    "city": "N/A",
+                    "region": "N/A",
+                    "isp": "Internal/Private",
+                    "timezone": "N/A"
+                }
+            
+            # Query ip-api.com (free, no API key needed, limit: 45 requests/minute)
+            with httpx.Client(timeout=5.0) as client:
+                response = client.get(f"http://ip-api.com/json/{ip_address}")
+            
+            if response.status_code == 200:
+                data = response.json()
+                
+                if data.get("status") == "success":
+                    return {
+                        "country": data.get("country", "Unknown"),
+                        "country_code": data.get("countryCode", "Unknown"),
+                        "city": data.get("city", "Unknown"),
+                        "region": data.get("regionName", "Unknown"),
+                        "isp": data.get("isp", "Unknown"),
+                        "org": data.get("org", "Unknown"),
+                        "timezone": data.get("timezone", "Unknown"),
+                        "latitude": data.get("lat"),
+                        "longitude": data.get("lon")
+                    }
+            
+            return {
+                "country": "Unknown",
+                "error": "Geolocation lookup failed"
+            }
+            
+        except Exception as e:
+            return {
+                "country": "Unknown",
+                "error": f"Geolocation error: {str(e)}"
             }
     
     def _is_private_ip(self, ip: str) -> bool:

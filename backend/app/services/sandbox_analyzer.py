@@ -160,9 +160,14 @@ class SandboxAnalyzer:
                 
                 # Domain Analysis (Enhanced)
                 "domain_age_days": domain_analysis.get("age_days"),
-                "domain_registrar": domain_analysis.get("registrar", "Unknown"),
-                "domain_country": domain_analysis.get("country", "Unknown"),
-                "domain_creation_date": domain_analysis.get("creation_date", "Unknown"),
+                "domain_age_display": domain_analysis.get("age_display", "Unknown"),
+                "domain_registrar": domain_analysis.get("registrar", "Data Unavailable"),
+                "domain_country": domain_analysis.get("country", "Data Unavailable"),
+                "domain_creation_date": domain_analysis.get("creation_date", "Data Unavailable"),
+                "domain_status": domain_analysis.get("status", "Unknown"),
+                "domain_organization": domain_analysis.get("organization"),
+                "domain_name_servers": domain_analysis.get("name_servers", []),
+                "domain_data_available": domain_analysis.get("data_available", False),
                 
                 # Advanced Detection Results
                 "url_structure_analysis": url_structure,
@@ -178,14 +183,33 @@ class SandboxAnalyzer:
                 "final_url": browser_analysis.get("final_url"),
                 "page_title": browser_analysis.get("page_title", "N/A"),
                 "page_content_snippet": browser_analysis.get("content_snippet", "No content available"),
+                "page_metadata": browser_analysis.get("page_metadata", {}),
                 "detected_scripts": browser_analysis.get("scripts", []),
                 "script_threats": browser_analysis.get("script_threats", []),
                 "login_forms_detected": browser_analysis.get("login_forms", False),
                 "form_fields": browser_analysis.get("form_fields", []),
                 "form_actions": browser_analysis.get("form_actions", []),
+                
+                # Enhanced cookie information
                 "cookies_set": browser_analysis.get("cookies", []),
-                "tracking_cookies": browser_analysis.get("tracking_cookie_count", 0),
+                "total_cookies": browser_analysis.get("total_cookies", 0),
+                "tracking_cookies": browser_analysis.get("tracking_cookies", 0),
+                "advertising_cookies": browser_analysis.get("advertising_cookies", 0),
+                "analytics_cookies": browser_analysis.get("analytics_cookies", 0),
+                "functional_cookies": browser_analysis.get("functional_cookies", 0),
+                "session_cookies": browser_analysis.get("session_cookies", 0),
+                "persistent_cookies": browser_analysis.get("persistent_cookies", 0),
+                "third_party_cookies": browser_analysis.get("third_party_cookies", 0),
+                "tracking_cookie_details": browser_analysis.get("tracking_cookie_details", []),
+                "advertising_cookie_details": browser_analysis.get("advertising_cookie_details", []),
+                "analytics_cookie_details": browser_analysis.get("analytics_cookie_details", []),
+                
+                # Enhanced tracking information
                 "third_party_trackers": browser_analysis.get("third_party_trackers", []),
+                "analytics_services": browser_analysis.get("analytics_services", []),
+                "ad_networks": browser_analysis.get("ad_networks", []),
+                "social_trackers": browser_analysis.get("social_trackers", []),
+                
                 "auto_downloads": browser_analysis.get("downloads", False),
                 "download_files": browser_analysis.get("download_files", []),
                 "external_requests": browser_analysis.get("external_requests", []),
@@ -259,30 +283,135 @@ class SandboxAnalyzer:
         }
     
     async def _analyze_domain(self, domain: str) -> Dict:
-        """Analyze domain information using WHOIS"""
+        """Analyze domain information using WHOIS with improved data extraction"""
         try:
-            w = whois.whois(domain)
+            # Clean domain (remove www., port, path)
+            clean_domain = domain.lower().replace('www.', '').split(':')[0].split('/')[0]
             
-            creation_date = w.creation_date
-            if isinstance(creation_date, list):
-                creation_date = creation_date[0]
+            # Attempt WHOIS lookup
+            w = whois.whois(clean_domain)
             
+            # Extract creation date (handle list or single value)
+            creation_date = None
+            if hasattr(w, 'creation_date') and w.creation_date:
+                if isinstance(w.creation_date, list):
+                    creation_date = w.creation_date[0] if w.creation_date[0] else None
+                else:
+                    creation_date = w.creation_date
+            
+            # Calculate domain age
+            age_days = None
+            age_display = "Unknown"
             if creation_date:
-                age_days = (datetime.now() - creation_date).days
-                
-                return {
-                    "age_days": age_days,
-                    "creation_date": creation_date.isoformat() if creation_date else None,
-                    "registrar": w.registrar,
-                    "country": w.country if hasattr(w, 'country') else None,
-                }
-            else:
-                return {"age_days": None, "error": "Could not determine domain age"}
+                try:
+                    # Handle timezone-aware datetime objects
+                    if hasattr(creation_date, 'tzinfo') and creation_date.tzinfo is not None:
+                        creation_date = creation_date.replace(tzinfo=None)
+                    
+                    age_days = (datetime.now() - creation_date).days
+                    years = age_days // 365
+                    months = (age_days % 365) // 30
+                    
+                    if years >= 1:
+                        age_display = f"{years} year{'s' if years != 1 else ''}"
+                        if months > 0:
+                            age_display += f", {months} month{'s' if months != 1 else ''}"
+                    elif months >= 1:
+                        age_display = f"{months} month{'s' if months != 1 else ''}"
+                    else:
+                        age_display = f"{age_days} day{'s' if age_days != 1 else ''}"
+                except Exception as e:
+                    age_display = f"Calculation Error: {str(e)[:30]}"
+            
+            # Extract registrar (handle various formats)
+            registrar = "Unknown"
+            if hasattr(w, 'registrar') and w.registrar:
+                if isinstance(w.registrar, list):
+                    registrar = w.registrar[0] if w.registrar else "Unknown"
+                else:
+                    registrar = str(w.registrar)
+                # Clean up registrar name
+                if registrar and registrar != "Unknown":
+                    # Remove common suffixes for cleaner display
+                    registrar = registrar.replace(', LLC', '').replace(' LLC', '').replace(', Inc.', '').strip()[:50]
+            
+            # Extract country
+            country = "Unknown"
+            if hasattr(w, 'country') and w.country:
+                if isinstance(w.country, list):
+                    country = w.country[0] if w.country else "Unknown"
+                else:
+                    country = str(w.country)
+            
+            # Extract registrant organization (additional info)
+            organization = None
+            if hasattr(w, 'org') and w.org:
+                organization = str(w.org) if not isinstance(w.org, list) else (w.org[0] if w.org else None)
+            
+            # Extract name servers
+            name_servers = []
+            if hasattr(w, 'name_servers') and w.name_servers:
+                if isinstance(w.name_servers, list):
+                    name_servers = [str(ns).lower() for ns in w.name_servers[:3]]  # Limit to 3
+                else:
+                    name_servers = [str(w.name_servers).lower()]
+            
+            # Extract status
+            status = []
+            if hasattr(w, 'status') and w.status:
+                if isinstance(w.status, list):
+                    status = [str(s).lower() for s in w.status if s]
+                else:
+                    status = [str(w.status).lower()]
+            
+            # Determine domain status summary
+            status_summary = "Active"
+            if any('clienthold' in s for s in status):
+                status_summary = "On Hold"
+            elif any('pendingdelete' in s for s in status):
+                status_summary = "Pending Deletion"
+            elif any('redemption' in s for s in status):
+                status_summary = "Redemption Period"
+            
+            return {
+                "age_days": age_days,
+                "age_display": age_display,
+                "creation_date": creation_date.strftime("%Y-%m-%d") if creation_date else "Unknown",
+                "registrar": registrar,
+                "country": country,
+                "organization": organization,
+                "name_servers": name_servers,
+                "status": status_summary,
+                "raw_status": status,
+                "data_available": registrar != "Unknown" or country != "Unknown" or age_days is not None
+            }
                 
         except Exception as e:
+            # Return structured "no data available" response
+            error_msg = str(e).lower()
+            
+            # Provide more specific error messages
+            if "no match" in error_msg or "not found" in error_msg:
+                reason = "Domain not registered or WHOIS data unavailable"
+            elif "timeout" in error_msg:
+                reason = "WHOIS server timeout"
+            elif "connection" in error_msg:
+                reason = "Cannot connect to WHOIS server"
+            else:
+                reason = "WHOIS lookup failed"
+            
             return {
                 "age_days": None,
-                "error": str(e)
+                "age_display": "Data Unavailable",
+                "creation_date": "Data Unavailable",
+                "registrar": "Data Unavailable",
+                "country": "Data Unavailable",
+                "organization": None,
+                "name_servers": [],
+                "status": "Unknown",
+                "raw_status": [],
+                "data_available": False,
+                "error": reason
             }
     
     async def _analyze_with_browser(self, url: str) -> Dict:
@@ -335,6 +464,20 @@ class SandboxAnalyzer:
                 # Get final URL after redirects
                 final_url = page.url
                 
+                # Get HTTP response details
+                http_status = None
+                server_info = None
+                content_type = None
+                
+                async def capture_main_response(response):
+                    nonlocal http_status, server_info, content_type
+                    if response.url == final_url or response.url.rstrip('/') == final_url.rstrip('/'):
+                        http_status = response.status
+                        server_info = response.headers.get('server', 'Unknown')
+                        content_type = response.headers.get('content-type', 'Unknown')
+                
+                page.on("response", capture_main_response)
+                
                 # Get page title
                 page_title = await page.title()
                 
@@ -342,9 +485,130 @@ class SandboxAnalyzer:
                 content = await page.content()
                 soup = BeautifulSoup(content, 'html.parser')
                 
-                # Extract text snippet
-                text_content = soup.get_text()
-                content_snippet = ' '.join(text_content.split())[:500]
+                # Extract text snippet with multiple fallback strategies
+                content_snippet = ""
+                
+                # Strategy 1: Try to get meaningful content from specific tags
+                main_content = soup.find('main') or soup.find('article') or soup.find('div', class_=['content', 'main-content', 'page-content'])
+                if main_content:
+                    text_content = main_content.get_text()
+                    content_snippet = ' '.join(text_content.split())[:500]
+                
+                # Strategy 2: Extract from paragraphs if main content not found
+                if not content_snippet or len(content_snippet) < 50:
+                    paragraphs = soup.find_all('p')
+                    if paragraphs:
+                        para_texts = [p.get_text().strip() for p in paragraphs[:5] if p.get_text().strip()]
+                        content_snippet = ' '.join(para_texts)[:500]
+                
+                # Strategy 3: Extract from headings if no paragraphs
+                if not content_snippet or len(content_snippet) < 30:
+                    headings = soup.find_all(['h1', 'h2', 'h3'])
+                    if headings:
+                        heading_texts = [h.get_text().strip() for h in headings[:5] if h.get_text().strip()]
+                        content_snippet = ' | '.join(heading_texts)[:500]
+                
+                # Strategy 4: Get all text as last resort
+                if not content_snippet:
+                    text_content = soup.get_text()
+                    content_snippet = ' '.join(text_content.split())[:500]
+                
+                # If still no content, provide URL information
+                if not content_snippet or content_snippet.strip() == '':
+                    parsed_url = urlparse(final_url)
+                    content_snippet = f"URL: {final_url} | Domain: {parsed_url.netloc} | Path: {parsed_url.path or '/'}"
+                
+                # Extract comprehensive page metadata
+                page_metadata = {}
+                
+                # Add HTTP response information
+                page_metadata['http_status'] = http_status or 'Unknown'
+                page_metadata['server'] = server_info or 'Unknown'
+                page_metadata['content_type'] = content_type or 'Unknown'
+                page_metadata['final_url'] = final_url
+                page_metadata['url_scheme'] = urlparse(final_url).scheme.upper()
+                page_metadata['domain'] = urlparse(final_url).netloc
+                
+                # Meta tags
+                meta_description = soup.find('meta', attrs={'name': 'description'})
+                meta_keywords = soup.find('meta', attrs={'name': 'keywords'})
+                meta_author = soup.find('meta', attrs={'name': 'author'})
+                meta_viewport = soup.find('meta', attrs={'name': 'viewport'})
+                
+                page_metadata['description'] = meta_description.get('content', 'N/A') if meta_description else 'N/A'
+                page_metadata['keywords'] = meta_keywords.get('content', 'N/A') if meta_keywords else 'N/A'
+                page_metadata['author'] = meta_author.get('content', 'N/A') if meta_author else 'N/A'
+                page_metadata['viewport'] = meta_viewport.get('content', 'N/A') if meta_viewport else 'N/A'
+                
+                # Open Graph data
+                og_title = soup.find('meta', property='og:title')
+                og_description = soup.find('meta', property='og:description')
+                og_image = soup.find('meta', property='og:image')
+                og_type = soup.find('meta', property='og:type')
+                
+                page_metadata['og_title'] = og_title.get('content', 'N/A') if og_title else 'N/A'
+                page_metadata['og_description'] = og_description.get('content', 'N/A') if og_description else 'N/A'
+                page_metadata['og_image'] = og_image.get('content', 'N/A') if og_image else 'N/A'
+                page_metadata['og_type'] = og_type.get('content', 'N/A') if og_type else 'N/A'
+                
+                # Improve page title with fallbacks
+                if not page_title or page_title.strip() == '':
+                    # Try Open Graph title
+                    if page_metadata['og_title'] != 'N/A':
+                        page_title = page_metadata['og_title']
+                    # Try h1 tag
+                    elif soup.find('h1'):
+                        page_title = soup.find('h1').get_text().strip()[:100]
+                    # Use domain as last resort
+                    else:
+                        page_title = f"{urlparse(final_url).netloc} - Page"
+                
+                # Favicon
+                favicon = soup.find('link', rel='icon') or soup.find('link', rel='shortcut icon')
+                page_metadata['favicon'] = favicon.get('href', 'N/A') if favicon else 'N/A'
+                
+                # Language
+                html_tag = soup.find('html')
+                page_metadata['language'] = html_tag.get('lang', 'N/A') if html_tag else 'N/A'
+                
+                # Character encoding
+                charset = soup.find('meta', attrs={'charset': True})
+                if not charset:
+                    charset = soup.find('meta', attrs={'http-equiv': 'Content-Type'})
+                    if charset:
+                        page_metadata['charset'] = charset.get('content', 'N/A').split('charset=')[-1] if 'charset=' in charset.get('content', '') else 'N/A'
+                    else:
+                        page_metadata['charset'] = 'N/A'
+                else:
+                    page_metadata['charset'] = charset.get('charset', 'N/A')
+                
+                # Count resources
+                images = soup.find_all('img')
+                stylesheets = soup.find_all('link', rel='stylesheet')
+                scripts_local = soup.find_all('script', src=True)
+                
+                page_metadata['image_count'] = len(images)
+                page_metadata['stylesheet_count'] = len(stylesheets)
+                page_metadata['script_count'] = len(scripts_local)
+                
+                # Detect frameworks and libraries
+                detected_technologies = []
+                html_content_lower = content.lower()
+                
+                if 'react' in html_content_lower or 'reactdom' in html_content_lower:
+                    detected_technologies.append('React')
+                if 'vue.js' in html_content_lower or 'vue.min.js' in html_content_lower:
+                    detected_technologies.append('Vue.js')
+                if 'angular' in html_content_lower:
+                    detected_technologies.append('Angular')
+                if 'jquery' in html_content_lower:
+                    detected_technologies.append('jQuery')
+                if 'bootstrap' in html_content_lower:
+                    detected_technologies.append('Bootstrap')
+                if 'wordpress' in html_content_lower or 'wp-content' in html_content_lower:
+                    detected_technologies.append('WordPress')
+                
+                page_metadata['technologies'] = detected_technologies if detected_technologies else ['None detected']
                 
                 # Analyze forms
                 forms = soup.find_all('form')
@@ -378,20 +642,122 @@ class SandboxAnalyzer:
                     if any(threat in script_url.lower() for threat in ['miner', 'crypto', 'coinhive']):
                         script_threats.append(f"Potential crypto miner: {script_url}")
                 
-                # Get cookies
+                # Get cookies with detailed analysis
                 cookies = await context.cookies()
-                tracking_cookie_count = sum(1 for c in cookies if 'track' in c['name'].lower() or 'analytics' in c['name'].lower())
-                
-                # Identify third-party trackers
                 parsed_main = urlparse(final_url)
-                third_party_trackers = []
-                for req in external_requests:
-                    req_domain = urlparse(req['url']).netloc
-                    if req_domain != parsed_main.netloc:
-                        if any(tracker in req_domain for tracker in ['google-analytics', 'facebook', 'doubleclick', 'tracking']):
-                            third_party_trackers.append(req_domain)
+                main_domain = parsed_main.netloc
                 
+                # Categorize cookies
+                cookie_details = []
+                tracking_cookies = []
+                advertising_cookies = []
+                analytics_cookies = []
+                functional_cookies = []
+                session_cookies = []
+                persistent_cookies = []
+                third_party_cookies = []
+                
+                # Known tracking/advertising domains
+                tracking_domains = ['doubleclick', 'google-analytics', 'googletagmanager', 'facebook', 'fbcdn', 
+                                   'twitter', 'linkedin', 'pinterest', 'analytics', 'tracking', 'ads', 'advertisement']
+                
+                for cookie in cookies:
+                    cookie_domain = cookie.get('domain', '').lstrip('.')
+                    cookie_name = cookie.get('name', '').lower()
+                    
+                    # Determine cookie type
+                    is_third_party = cookie_domain not in main_domain and main_domain not in cookie_domain
+                    is_session = cookie.get('expires', -1) == -1
+                    
+                    # Calculate expiry duration
+                    expiry_info = "Session"
+                    if not is_session and cookie.get('expires'):
+                        expiry_timestamp = cookie.get('expires')
+                        expiry_date = datetime.fromtimestamp(expiry_timestamp)
+                        days_until_expiry = (expiry_date - datetime.now()).days
+                        if days_until_expiry > 0:
+                            if days_until_expiry < 7:
+                                expiry_info = f"{days_until_expiry} days"
+                            elif days_until_expiry < 365:
+                                expiry_info = f"{days_until_expiry // 30} months"
+                            else:
+                                expiry_info = f"{days_until_expiry // 365} years"
+                        else:
+                            expiry_info = "Expired"
+                    
+                    cookie_info = {
+                        'name': cookie.get('name'),
+                        'domain': cookie_domain,
+                        'expiry': expiry_info,
+                        'secure': cookie.get('secure', False),
+                        'httpOnly': cookie.get('httpOnly', False),
+                        'sameSite': cookie.get('sameSite', 'None'),
+                        'is_third_party': is_third_party,
+                        'is_session': is_session
+                    }
+                    
+                    cookie_details.append(cookie_info)
+                    
+                    # Categorize by type
+                    if is_session:
+                        session_cookies.append(cookie_info)
+                    else:
+                        persistent_cookies.append(cookie_info)
+                    
+                    if is_third_party:
+                        third_party_cookies.append(cookie_info)
+                    
+                    # Categorize by purpose
+                    if any(keyword in cookie_name for keyword in ['_ga', '_gid', '_gat', 'analytics', 'utm_', '_fbp']):
+                        analytics_cookies.append(cookie_info)
+                    elif any(keyword in cookie_name for keyword in ['ad', 'doubleclick', 'adsense', '_gcl_', 'idam']):
+                        advertising_cookies.append(cookie_info)
+                    elif any(keyword in cookie_name for keyword in ['track', 'visitor', 'uid', 'uuid']):
+                        tracking_cookies.append(cookie_info)
+                    else:
+                        functional_cookies.append(cookie_info)
+                
+                # Identify third-party trackers and analytics services
+                third_party_trackers = []
+                analytics_services = []
+                ad_networks = []
+                social_trackers = []
+                
+                for req in external_requests:
+                    req_url = req['url']
+                    req_domain = urlparse(req_url).netloc
+                    
+                    if req_domain != main_domain:
+                        # Analytics services
+                        if 'google-analytics' in req_domain or 'googletagmanager' in req_domain:
+                            analytics_services.append('Google Analytics')
+                        elif 'facebook' in req_domain or 'fbcdn' in req_domain:
+                            social_trackers.append('Facebook Pixel')
+                        elif 'linkedin' in req_domain:
+                            social_trackers.append('LinkedIn Insight')
+                        elif 'twitter' in req_domain:
+                            social_trackers.append('Twitter Analytics')
+                        elif 'hotjar' in req_domain:
+                            analytics_services.append('Hotjar')
+                        elif 'mixpanel' in req_domain:
+                            analytics_services.append('Mixpanel')
+                        
+                        # Ad networks
+                        if 'doubleclick' in req_domain or 'adsense' in req_domain:
+                            ad_networks.append('Google Ads')
+                        elif 'advertising.com' in req_domain:
+                            ad_networks.append('Advertising.com')
+                        
+                        # General trackers
+                        if any(tracker in req_domain for tracker in tracking_domains):
+                            if req_domain not in third_party_trackers:
+                                third_party_trackers.append(req_domain)
+                
+                # Remove duplicates
                 third_party_trackers = list(set(third_party_trackers))
+                analytics_services = list(set(analytics_services))
+                ad_networks = list(set(ad_networks))
+                social_trackers = list(set(social_trackers))
                 
                 # Detect suspicious behaviors - IMPROVED DETECTION
                 suspicious_behaviors = []
@@ -448,14 +814,33 @@ class SandboxAnalyzer:
                     "redirect_chain": redirect_chain,
                     "page_title": page_title,
                     "content_snippet": content_snippet,
+                    "page_metadata": page_metadata,
                     "scripts": script_urls[:20],  # Limit to first 20
                     "script_threats": script_threats,
                     "login_forms": login_forms,
                     "form_fields": form_fields,
                     "form_actions": form_actions,
-                    "cookies": [{"name": c['name'], "domain": c['domain']} for c in cookies],
-                    "tracking_cookie_count": tracking_cookie_count,
+                    
+                    # Enhanced cookie information
+                    "cookies": cookie_details,
+                    "total_cookies": len(cookies),
+                    "tracking_cookies": len(tracking_cookies),
+                    "advertising_cookies": len(advertising_cookies),
+                    "analytics_cookies": len(analytics_cookies),
+                    "functional_cookies": len(functional_cookies),
+                    "session_cookies": len(session_cookies),
+                    "persistent_cookies": len(persistent_cookies),
+                    "third_party_cookies": len(third_party_cookies),
+                    "tracking_cookie_details": tracking_cookies,
+                    "advertising_cookie_details": advertising_cookies,
+                    "analytics_cookie_details": analytics_cookies,
+                    
+                    # Enhanced tracking information
                     "third_party_trackers": third_party_trackers,
+                    "analytics_services": analytics_services,
+                    "ad_networks": ad_networks,
+                    "social_trackers": social_trackers,
+                    
                     "external_requests": [r['url'] for r in external_requests[:30]],  # Limit
                     "suspicious_behaviors": suspicious_behaviors,
                     "downloads": False,

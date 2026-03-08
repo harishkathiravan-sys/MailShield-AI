@@ -45,7 +45,23 @@ class SandboxReport(Base):
     # Cookie Analysis
     cookies_set = Column(JSON)
     tracking_cookies = Column(Integer, default=0)
+    total_cookies = Column(Integer, default=0)
+    advertising_cookies = Column(Integer, default=0)
+    analytics_cookies = Column(Integer, default=0)
+    functional_cookies = Column(Integer, default=0)
+    session_cookies = Column(Integer, default=0)
+    persistent_cookies = Column(Integer, default=0)
+    third_party_cookies = Column(Integer, default=0)
+    tracking_cookie_details = Column(JSON)
+    advertising_cookie_details = Column(JSON)
+    analytics_cookie_details = Column(JSON)
     third_party_trackers = Column(JSON)
+    analytics_services = Column(JSON)
+    ad_networks = Column(JSON)
+    social_trackers = Column(JSON)
+    
+    # Page Metadata
+    page_metadata = Column(JSON)
     
     # Behavioral Analysis
     auto_downloads = Column(Boolean, default=False)

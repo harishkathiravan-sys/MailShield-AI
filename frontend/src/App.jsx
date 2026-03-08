@@ -3,6 +3,7 @@ import { Toaster } from 'react-hot-toast';
 import Navbar from './components/Navbar';
 import HomePage from './pages/HomePage';
 import AnalyzerPage from './pages/AnalyzerPage';
+import EmailSourceAnalyzer from './pages/EmailSourceAnalyzer';
 import ResultsPage from './pages/ResultsPage';
 import SandboxReportPage from './pages/SandboxReportPage';
 import DashboardPage from './pages/DashboardPage';
@@ -19,6 +20,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/analyze" element={<AnalyzerPage />} />
+          <Route path="/email-source" element={<EmailSourceAnalyzer />} />
           <Route path="/results/:id" element={<ResultsPage />} />
           <Route path="/sandbox-report/:id" element={<SandboxReportPage />} />
           <Route path="/dashboard" element={<DashboardPage />} />

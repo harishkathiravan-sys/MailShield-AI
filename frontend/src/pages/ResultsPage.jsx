@@ -100,6 +100,41 @@ const ResultsPage = () => {
           <p className="text-gray-400">Comprehensive email security assessment</p>
         </motion.div>
 
+        {/* Safety Recommendation - First Box */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.05 }}
+          className="bg-gradient-to-r from-yellow-500/10 to-orange-500/10 border-2 border-yellow-500/50 rounded-lg p-6 mb-8"
+        >
+          <div className="flex items-start gap-4">
+            <div className="flex-shrink-0">
+              <AlertTriangle className="w-8 h-8 text-yellow-400" />
+            </div>
+            <div className="flex-1">
+              <h3 className="text-xl font-bold text-yellow-400 mb-3">🛡️ Safety Recommendations</h3>
+              <div className="space-y-2 text-gray-300">
+                <p className="flex items-start gap-2">
+                  <span className="text-yellow-400 mt-1">⚠️</span>
+                  <span><strong>Do not click</strong> on any suspicious links or download attachments from untrusted sources</span>
+                </p>
+                <p className="flex items-start gap-2">
+                  <span className="text-yellow-400 mt-1">🚫</span>
+                  <span><strong>Never provide</strong> personal information, passwords, or financial details via email</span>
+                </p>
+                <p className="flex items-start gap-2">
+                  <span className="text-yellow-400 mt-1">✓</span>
+                  <span><strong>Always verify</strong> the sender's identity by contacting them through official channels</span>
+                </p>
+                <p className="flex items-start gap-2">
+                  <span className="text-yellow-400 mt-1">📧</span>
+                  <span><strong>Report suspicious emails</strong> to your IT department or email provider immediately</span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
         {/* Risk Overview */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
