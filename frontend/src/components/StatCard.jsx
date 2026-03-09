@@ -2,11 +2,11 @@ import { motion } from 'framer-motion';
 
 const StatCard = ({ icon: Icon, label, value, color = 'blue' }) => {
   const colorClasses = {
-    blue: 'from-cyber-blue to-blue-600',
-    purple: 'from-cyber-purple to-purple-600',
-    green: 'from-cyber-green to-green-600',
-    red: 'from-cyber-red to-red-600',
-    yellow: 'from-yellow-400 to-yellow-600',
+    blue: 'from-blue-600 to-blue-500',
+    purple: 'from-purple-600 to-purple-500',
+    green: 'from-green-600 to-green-500',
+    red: 'from-red-600 to-red-500',
+    yellow: 'from-yellow-500 to-yellow-600',
   };
 
   return (
@@ -16,7 +16,7 @@ const StatCard = ({ icon: Icon, label, value, color = 'blue' }) => {
       whileHover={{ scale: 1.03, y: -5 }}
       className="cyber-card relative overflow-hidden"
     >
-      <div className="absolute top-0 right-0 w-32 h-32 -mr-8 -mt-8 opacity-10">
+      <div className="absolute top-0 right-0 w-32 h-32 -mr-8 -mt-8 opacity-5">
         <Icon className="w-full h-full" />
       </div>
       
@@ -25,8 +25,8 @@ const StatCard = ({ icon: Icon, label, value, color = 'blue' }) => {
           <Icon className="w-6 h-6 text-white" />
         </div>
         
-        <p className="text-gray-400 text-sm mb-1">{label}</p>
-        <p className="text-3xl font-bold text-white">{value}</p>
+        <p className="text-gray-600 text-sm mb-1">{label}</p>
+        <p className="text-3xl font-bold text-gray-900">{value}</p>
       </div>
       
       <motion.div

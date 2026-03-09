@@ -12,7 +12,7 @@ import CyberBackground from './components/background/CyberBackground';
 function App() {
   return (
     <Router>
-      <div className="min-h-screen bg-cyber-darker">
+      <div className="min-h-screen bg-white">
         {/* Interactive WebGL Background */}
         <CyberBackground />
         
@@ -29,9 +29,9 @@ function App() {
           position="top-right"
           toastOptions={{
             style: {
-              background: '#0d1117',
-              color: '#fff',
-              border: '1px solid #00d4ff',
+              background: '#ffffff',
+              color: '#1f2937',
+              border: '1px solid #d1d5db',
             },
           }}
         />

@@ -31,7 +31,7 @@ export default function ParticleBurst({ children, particleCount = 12, className 
         {particles.map((particle) => (
           <motion.div
             key={particle.id}
-            className="absolute w-2 h-2 rounded-full bg-cyber-blue pointer-events-none"
+            className="absolute w-2 h-2 rounded-full bg-gray-700 pointer-events-none"
             initial={{
               x: particle.x,
               y: particle.y,

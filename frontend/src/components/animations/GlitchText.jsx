@@ -20,13 +20,13 @@ export default function GlitchText({ text, className = '' }) {
       {isGlitching && (
         <>
           <span
-            className="absolute top-0 left-0 text-cyber-blue opacity-70 animate-glitch-1"
+            className="absolute top-0 left-0 text-gray-800 opacity-70 animate-glitch-1"
             aria-hidden="true"
           >
             {text}
           </span>
           <span
-            className="absolute top-0 left-0 text-cyber-red opacity-70 animate-glitch-2"
+            className="absolute top-0 left-0 text-red-600 opacity-70 animate-glitch-2"
             aria-hidden="true"
           >
             {text}

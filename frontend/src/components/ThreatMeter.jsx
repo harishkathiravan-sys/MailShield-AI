@@ -6,10 +6,10 @@ const ThreatMeter = ({ score, label }) => {
   
   // Determine color based on score
   const getColor = () => {
-    if (score >= 0.8) return { from: '#ff3366', to: '#ff006e' };
-    if (score >= 0.6) return { from: '#ff9500', to: '#ff6b00' };
-    if (score >= 0.4) return { from: '#ffcc00', to: '#ffaa00' };
-    return { from: '#00ff88', to: '#00d4ff' };
+    if (score >= 0.8) return { from: '#dc2626', to: '#991b1b' };
+    if (score >= 0.6) return { from: '#f97316', to: '#c2410c' };
+    if (score >= 0.4) return { from: '#eab308', to: '#ca8a04' };
+    return { from: '#22c55e', to: '#16a34a' };
   };
 
   const colors = getColor();
@@ -17,11 +17,11 @@ const ThreatMeter = ({ score, label }) => {
   return (
     <div className="w-full">
       <div className="flex justify-between items-center mb-2">
-        <span className="text-sm font-medium text-gray-300">{label}</span>
-        <span className="text-sm font-bold text-cyber-blue">{percentage}%</span>
+        <span className="text-sm font-medium text-gray-700">{label}</span>
+        <span className="text-sm font-bold text-gray-900">{percentage}%</span>
       </div>
       
-      <div className="relative w-full h-3 bg-cyber-dark rounded-full overflow-hidden border border-cyber-blue/30">
+      <div className="relative w-full h-3 bg-gray-200 rounded-full overflow-hidden border border-gray-300">
         <motion.div
           initial={{ width: 0 }}
           animate={{ width: `${percentage}%` }}
@@ -31,7 +31,7 @@ const ThreatMeter = ({ score, label }) => {
             background: `linear-gradient(to right, ${colors.from}, ${colors.to})`,
           }}
         >
-          <div className="absolute inset-0 bg-white/20 animate-pulse" />
+          <div className="absolute inset-0 bg-white/30 animate-pulse" />
         </motion.div>
       </div>
     </div>

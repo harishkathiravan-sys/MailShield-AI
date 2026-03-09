@@ -54,7 +54,7 @@ const SandboxReportPage = () => {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <XCircle className="w-16 h-16 text-cyber-red mx-auto mb-4" />
+          <XCircle className="w-16 h-16 text-red-600 mx-auto mb-4" />
           <h2 className="text-2xl font-bold mb-2">Report Not Found</h2>
           <button onClick={() => navigate('/analyze')} className="cyber-button mt-4">
             Start New Analysis
@@ -73,7 +73,7 @@ const SandboxReportPage = () => {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-8"
         >
-          <div className="inline-flex items-center justify-center w-16 h-16 mb-4 rounded-full bg-gradient-to-br from-cyber-blue to-cyber-purple">
+          <div className="inline-flex items-center justify-center w-16 h-16 mb-4 rounded-full bg-gradient-to-br from-gray-800 to-gray-600">
             <Shield className="w-8 h-8 text-white" />
           </div>
           <h1 className="text-4xl font-bold mb-2">Sandbox Analysis Report</h1>
@@ -96,9 +96,9 @@ const SandboxReportPage = () => {
             <ThreatMeter score={report.safety_score} label="Overall Safety Score" />
           </div>
 
-          <div className="p-4 bg-cyber-bg border border-cyber-blue/20 rounded-lg">
-            <div className="text-sm text-gray-400 mb-1">Analyzed URL:</div>
-            <div className="font-mono text-cyber-blue break-all flex items-center">
+          <div className="p-4 bg-gray-50 border border-gray-200 rounded-lg">
+            <div className="text-sm text-gray-600 mb-1">Analyzed URL:</div>
+            <div className="font-mono text-gray-900 break-all flex items-center">
               <LinkIcon className="w-4 h-4 mr-2 flex-shrink-0" />
               {report.url}
             </div>
@@ -113,7 +113,7 @@ const SandboxReportPage = () => {
           className="cyber-card mb-8"
         >
           <h3 className="text-xl font-bold mb-4 flex items-center">
-            <Lock className="w-5 h-5 mr-2 text-cyber-blue" />
+            <Lock className="w-5 h-5 mr-2 text-gray-900" />
             SSL Certificate Analysis
           </h3>
 
@@ -122,7 +122,7 @@ const SandboxReportPage = () => {
               label="Certificate Valid"
               value={report.ssl_analysis.valid ? 'Yes' : 'No'}
               icon={report.ssl_analysis.valid ? CheckCircle : XCircle}
-              valueColor={report.ssl_analysis.valid ? 'text-cyber-green' : 'text-cyber-red'}
+              valueColor={report.ssl_analysis.valid ? 'text-green-600' : 'text-red-600'}
             />
             <InfoCard
               label="Issuer"
@@ -151,7 +151,7 @@ const SandboxReportPage = () => {
           className="cyber-card mb-8"
         >
           <h3 className="text-xl font-bold mb-4 flex items-center">
-            <Globe className="w-5 h-5 mr-2 text-cyber-blue" />
+            <Globe className="w-5 h-5 mr-2 text-gray-900" />
             Domain Reputation
           </h3>
 
@@ -203,7 +203,7 @@ const SandboxReportPage = () => {
             className="cyber-card mb-8"
           >
             <h3 className="text-xl font-bold mb-4 flex items-center">
-              <ExternalLink className="w-5 h-5 mr-2 text-cyber-blue" />
+              <ExternalLink className="w-5 h-5 mr-2 text-gray-900" />
               Redirect Chain ({report.redirect_analysis.count})
             </h3>
 
@@ -211,13 +211,13 @@ const SandboxReportPage = () => {
               {report.redirect_analysis.chain.map((redirect, index) => (
                 <div
                   key={index}
-                  className="p-3 bg-cyber-bg border border-cyber-blue/20 rounded-lg"
+                  className="p-3 bg-gray-50 border border-gray-200 rounded-lg"
                 >
                   <div className="flex items-center space-x-2 mb-1">
-                    <span className="text-xs font-bold text-cyber-blue">
+                    <span className="text-xs font-bold text-gray-900">
                       Step {index + 1}
                     </span>
-                    <span className="text-xs px-2 py-0.5 bg-cyber-purple/20 text-cyber-purple rounded">
+                    <span className="text-xs px-2 py-0.5 bg-gray-200 text-gray-800 rounded">
                       {redirect.status}
                     </span>
                   </div>
@@ -229,9 +229,9 @@ const SandboxReportPage = () => {
             </div>
 
             {report.redirect_analysis.final_url !== report.url && (
-              <div className="mt-4 p-3 bg-cyber-blue/10 border border-cyber-blue/30 rounded-lg">
-                <div className="text-sm text-gray-400 mb-1">Final destination:</div>
-                <div className="font-mono text-cyber-blue text-sm break-all">
+              <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                <div className="text-sm text-gray-600 mb-1">Final destination:</div>
+                <div className="font-mono text-gray-900 text-sm break-all">
                   {report.redirect_analysis.final_url}
                 </div>
               </div>
@@ -245,15 +245,15 @@ const SandboxReportPage = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
-            className="cyber-card mb-8 border-cyber-red/30"
+            className="cyber-card mb-8 border-red-200"
           >
-            <h3 className="text-xl font-bold mb-4 flex items-center text-cyber-red">
+            <h3 className="text-xl font-bold mb-4 flex items-center text-red-600">
               <AlertTriangle className="w-5 h-5 mr-2" />
               Login Forms Detected (PHISHING RISK)
             </h3>
 
-            <div className="p-4 bg-cyber-red/10 border border-cyber-red/30 rounded-lg mb-4">
-              <p className="text-sm text-cyber-red">
+            <div className="p-4 bg-red-50 border border-red-200 rounded-lg mb-4">
+              <p className="text-sm text-red-700">
                 <strong>Warning:</strong> This page contains login forms that may be attempting to
                 harvest credentials. Do not enter any sensitive information.
               </p>
@@ -264,9 +264,9 @@ const SandboxReportPage = () => {
                 {report.form_analysis.form_fields.map((form, index) => (
                   <div
                     key={index}
-                    className="p-3 bg-cyber-bg border border-cyber-red/20 rounded-lg"
+                    className="p-3 bg-gray-50 border border-gray-200 rounded-lg"
                   >
-                    <div className="text-sm text-gray-400 mb-2">Form {index + 1}</div>
+                    <div className="text-sm text-gray-600 mb-2">Form {index + 1}</div>
                     <div className="text-xs font-mono text-gray-500 mb-2">
                       Action: {form.action || 'Not specified'}
                     </div>
@@ -274,7 +274,7 @@ const SandboxReportPage = () => {
                       {form.fields.map(([name, type], fieldIndex) => (
                         <span
                           key={fieldIndex}
-                          className="px-2 py-1 bg-cyber-red/20 text-cyber-red rounded text-xs"
+                          className="px-2 py-1 bg-red-100 text-red-700 rounded text-xs"
                         >
                           {name || 'unnamed'} ({type})
                         </span>
@@ -297,16 +297,16 @@ const SandboxReportPage = () => {
             className="cyber-card mb-8"
           >
             <h3 className="text-xl font-bold mb-4 flex items-center">
-              <Code className="w-5 h-5 mr-2 text-cyber-blue" />
+              <Code className="w-5 h-5 mr-2 text-gray-900" />
               Script Analysis
             </h3>
 
             {report.page_analysis.script_threats?.length > 0 && (
-              <div className="p-4 bg-cyber-red/10 border border-cyber-red/30 rounded-lg mb-4">
-                <h4 className="font-semibold text-cyber-red mb-2">⚠️ Threats Detected:</h4>
+              <div className="p-4 bg-red-50 border border-red-200 rounded-lg mb-4">
+                <h4 className="font-semibold text-red-700 mb-2">⚠️ Threats Detected:</h4>
                 <ul className="space-y-1">
                   {report.page_analysis.script_threats.map((threat, index) => (
-                    <li key={index} className="text-sm text-cyber-red">
+                    <li key={index} className="text-sm text-red-700">
                       • {threat}
                     </li>
                   ))}
@@ -322,7 +322,7 @@ const SandboxReportPage = () => {
                 {report.page_analysis.scripts.map((script, index) => (
                   <div
                     key={index}
-                    className="text-xs font-mono text-gray-400 p-2 bg-cyber-bg rounded border border-cyber-blue/10"
+                    className="text-xs font-mono text-gray-700 p-2 bg-gray-50 rounded border border-gray-200"
                   >
                     {script}
                   </div>
@@ -340,7 +340,7 @@ const SandboxReportPage = () => {
           className="cyber-card mb-8"
         >
           <h3 className="text-xl font-bold mb-4 flex items-center">
-            <Cookie className="w-5 h-5 mr-2 text-cyber-blue" />
+            <Cookie className="w-5 h-5 mr-2 text-gray-900" />
             Cookie & Tracking Analysis
           </h3>
 
@@ -368,27 +368,27 @@ const SandboxReportPage = () => {
 
           {/* Cookie Breakdown */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-            <div className="p-3 bg-cyber-bg border border-cyber-blue/20 rounded-lg">
-              <div className="text-xs text-gray-400">Functional</div>
-              <div className="text-lg font-semibold text-green-400">
+            <div className="p-3 bg-gray-50 border border-gray-200 rounded-lg">
+              <div className="text-xs text-gray-600">Functional</div>
+              <div className="text-lg font-semibold text-green-600">
                 {report.tracking_analysis.functional_cookies || 0}
               </div>
             </div>
-            <div className="p-3 bg-cyber-bg border border-cyber-blue/20 rounded-lg">
-              <div className="text-xs text-gray-400">Session</div>
-              <div className="text-lg font-semibold text-blue-400">
+            <div className="p-3 bg-gray-50 border border-gray-200 rounded-lg">
+              <div className="text-xs text-gray-600">Session</div>
+              <div className="text-lg font-semibold text-blue-600">
                 {report.tracking_analysis.session_cookies || 0}
               </div>
             </div>
-            <div className="p-3 bg-cyber-bg border border-cyber-blue/20 rounded-lg">
-              <div className="text-xs text-gray-400">Persistent</div>
-              <div className="text-lg font-semibold text-purple-400">
+            <div className="p-3 bg-gray-50 border border-gray-200 rounded-lg">
+              <div className="text-xs text-gray-600">Persistent</div>
+              <div className="text-lg font-semibold text-purple-600">
                 {report.tracking_analysis.persistent_cookies || 0}
               </div>
             </div>
-            <div className="p-3 bg-cyber-bg border border-cyber-blue/20 rounded-lg">
-              <div className="text-xs text-gray-400">Third-Party</div>
-              <div className="text-lg font-semibold text-yellow-400">
+            <div className="p-3 bg-gray-50 border border-gray-200 rounded-lg">
+              <div className="text-xs text-gray-600">Third-Party</div>
+              <div className="text-lg font-semibold text-yellow-600">
                 {report.tracking_analysis.third_party_cookies || 0}
               </div>
             </div>
@@ -487,7 +487,7 @@ const SandboxReportPage = () => {
           className="cyber-card mb-8"
         >
           <h3 className="text-xl font-bold mb-4 flex items-center">
-            <FileText className="w-5 h-5 mr-2 text-cyber-blue" />
+            <FileText className="w-5 h-5 mr-2 text-gray-900" />
             Page Information
           </h3>
 
@@ -512,8 +512,8 @@ const SandboxReportPage = () => {
                 <div className="text-sm text-gray-400 mb-2">Server Response:</div>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                   {report.page_information.metadata.http_status && report.page_information.metadata.http_status !== 'Unknown' && (
-                    <div className="p-3 bg-cyber-bg border border-cyber-blue/20 rounded-lg">
-                      <div className="text-xs text-gray-400">HTTP Status</div>
+                    <div className="p-3 bg-gray-50 border border-gray-200 rounded-lg">
+                      <div className="text-xs text-gray-600">HTTP Status</div>
                       <div className={`text-lg font-semibold ${
                         report.page_information.metadata.http_status < 300 ? 'text-green-400' : 
                         report.page_information.metadata.http_status < 400 ? 'text-yellow-400' : 'text-red-400'

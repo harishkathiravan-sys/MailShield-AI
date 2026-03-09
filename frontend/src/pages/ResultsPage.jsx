@@ -74,7 +74,7 @@ const ResultsPage = () => {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <XCircle className="w-16 h-16 text-cyber-red mx-auto mb-4" />
+          <XCircle className="w-16 h-16 text-red-600 mx-auto mb-4" />
           <h2 className="text-2xl font-bold mb-2">Analysis Not Found</h2>
           <button onClick={() => navigate('/analyze')} className="cyber-button mt-4">
             Analyze New Email
@@ -166,7 +166,7 @@ const ResultsPage = () => {
             className="cyber-card"
           >
             <h3 className="text-xl font-bold mb-4 flex items-center">
-              <Mail className="w-5 h-5 mr-2 text-cyber-blue" />
+              <Mail className="w-5 h-5 mr-2 text-gray-900" />
               Email Information
             </h3>
             <div className="space-y-3">
@@ -188,7 +188,7 @@ const ResultsPage = () => {
             className="cyber-card"
           >
             <h3 className="text-xl font-bold mb-4 flex items-center">
-              <AlertTriangle className="w-5 h-5 mr-2 text-cyber-blue" />
+              <AlertTriangle className="w-5 h-5 mr-2 text-gray-900" />
               Detected Indicators
             </h3>
             <div className="space-y-3">
@@ -196,7 +196,7 @@ const ResultsPage = () => {
                 label="Credential Requests"
                 value={analysis.credential_requests ? 'Detected' : 'None'}
                 icon={analysis.credential_requests ? XCircle : CheckCircle}
-                valueColor={analysis.credential_requests ? 'text-cyber-red' : 'text-cyber-green'}
+                valueColor={analysis.credential_requests ? 'text-red-600' : 'text-green-600'}
               />
               <InfoRow
                 label="Urgency Patterns"
@@ -228,7 +228,7 @@ const ResultsPage = () => {
             <div className="space-y-4">
               {analysis.detected_keywords.spam?.length > 0 && (
                 <div>
-                  <h4 className="text-sm font-semibold text-cyber-blue mb-2">Spam Keywords:</h4>
+                  <h4 className="text-sm font-semibold text-gray-900 mb-2">Spam Keywords:</h4>
                   <div className="flex flex-wrap gap-2">
                     {analysis.detected_keywords.spam.map((keyword, index) => (
                       <span
@@ -243,14 +243,14 @@ const ResultsPage = () => {
               )}
               {analysis.detected_keywords.phishing?.length > 0 && (
                 <div>
-                  <h4 className="text-sm font-semibold text-cyber-red mb-2">
+                  <h4 className="text-sm font-semibold text-red-600 mb-2">
                     Phishing Keywords:
                   </h4>
                   <div className="flex flex-wrap gap-2">
                     {analysis.detected_keywords.phishing.map((keyword, index) => (
                       <span
                         key={index}
-                        className="px-3 py-1 bg-cyber-red/20 text-cyber-red rounded-full text-sm border border-cyber-red/30"
+                        className="px-3 py-1 bg-red-100 text-red-700 rounded-full text-sm border border-red-300"
                       >
                         {keyword}
                       </span>
@@ -272,7 +272,7 @@ const ResultsPage = () => {
           >
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-xl font-bold flex items-center">
-                <LinkIcon className="w-5 h-5 mr-2 text-cyber-blue" />
+                <LinkIcon className="w-5 h-5 mr-2 text-gray-900" />
                 Extracted URLs ({analysis.extracted_urls.length})
               </h3>
               <motion.button
@@ -290,13 +290,13 @@ const ResultsPage = () => {
               {analysis.extracted_urls.map((url, index) => (
                 <div
                   key={index}
-                  className="p-3 bg-cyber-bg border border-cyber-blue/20 rounded-lg flex items-center justify-between group hover:border-cyber-blue/50 transition-colors"
+                  className="p-3 bg-gray-50 border border-gray-200 rounded-lg flex items-center justify-between group hover:border-gray-300 transition-colors"
                 >
-                  <span className="text-sm font-mono text-gray-300 break-all">{url}</span>
+                  <span className="text-sm font-mono text-gray-700 break-all">{url}</span>
                   {urlReports[index] && (
                     <button
                       onClick={() => navigate(`/sandbox-report/${urlReports[index]}`)}
-                      className="ml-4 text-cyber-blue hover:text-cyber-purple text-sm font-medium whitespace-nowrap"
+                      className="ml-4 text-gray-900 hover:text-gray-700 text-sm font-medium whitespace-nowrap"
                     >
                       View Report →
                     </button>
@@ -323,9 +323,9 @@ const ResultsPage = () => {
   );
 };
 
-const InfoRow = ({ label, value, icon: Icon, valueColor = 'text-gray-300' }) => (
-  <div className="flex items-center justify-between py-2 border-b border-cyber-blue/10">
-    <span className="text-gray-400 text-sm flex items-center">
+const InfoRow = ({ label, value, icon: Icon, valueColor = 'text-gray-700' }) => (
+  <div className="flex items-center justify-between py-2 border-b border-gray-200">
+    <span className="text-gray-600 text-sm flex items-center">
       {Icon && <Icon className="w-4 h-4 mr-2" />}
       {label}
     </span>

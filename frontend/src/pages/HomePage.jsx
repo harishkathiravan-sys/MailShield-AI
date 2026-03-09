@@ -49,8 +49,8 @@ const HomePage = () => {
       {/* Hero Section */}
       <section className="relative overflow-hidden py-16 px-4">
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute w-96 h-96 -top-48 -left-48 bg-cyber-blue/20 rounded-full blur-3xl" />
-          <div className="absolute w-96 h-96 -bottom-48 -right-48 bg-cyber-purple/20 rounded-full blur-3xl" />
+          <div className="absolute w-96 h-96 -top-48 -left-48 bg-gray-300/10 rounded-full blur-3xl" />
+          <div className="absolute w-96 h-96 -bottom-48 -right-48 bg-gray-400/10 rounded-full blur-3xl" />
         </div>
 
         <motion.div
@@ -63,10 +63,10 @@ const HomePage = () => {
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ delay: 0.2, type: 'spring' }}
-            className="inline-flex items-center justify-center w-20 h-20 mb-8 rounded-full bg-gradient-to-br from-cyber-blue to-cyber-purple p-1"
+            className="inline-flex items-center justify-center w-20 h-20 mb-8 rounded-full bg-gradient-to-br from-gray-800 to-gray-600 p-1"
           >
-            <div className="w-full h-full bg-cyber-darker rounded-full flex items-center justify-center">
-              <Shield className="w-10 h-10 text-cyber-blue" />
+            <div className="w-full h-full bg-white rounded-full flex items-center justify-center">
+              <Shield className="w-10 h-10 text-gray-900" />
             </div>
           </motion.div>
 
@@ -74,7 +74,7 @@ const HomePage = () => {
             <GlitchText text="Analyze Suspicious Emails" />
           </h1>
 
-          <p className="text-xl md:text-2xl text-gray-400 mb-12 max-w-3xl mx-auto">
+          <p className="text-xl md:text-2xl text-gray-600 mb-12 max-w-3xl mx-auto">
             <TypewriterText 
               text="Paste any suspicious email and let our AI-powered sandbox system safely investigate it. Real security analysis with automated threat detection."
               delay={30}
@@ -99,7 +99,7 @@ const HomePage = () => {
       </section>
 
       {/* Stats Section */}
-      <section className="py-12 px-4 bg-cyber-dark/50">
+      <section className="py-12 px-4 bg-gray-50">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             {stats.map((stat, index) => (
@@ -116,9 +116,9 @@ const HomePage = () => {
                   whileHover={{ rotate: 360 }}
                   transition={{ duration: 0.6 }}
                 >
-                  <stat.icon className="w-8 h-8 text-cyber-blue mx-auto mb-3" />
+                  <stat.icon className="w-8 h-8 text-gray-900 mx-auto mb-3" />
                 </motion.div>
-                <div className="text-3xl font-bold text-white mb-1">
+                <div className="text-3xl font-bold text-gray-900 mb-1">
                   <AnimatedCounter 
                     end={stat.value} 
                     suffix={stat.suffix} 
@@ -126,7 +126,7 @@ const HomePage = () => {
                     duration={2000}
                   />
                 </div>
-                <div className="text-gray-400">{stat.label}</div>
+                <div className="text-gray-600">{stat.label}</div>
               </motion.div>
             ))}
           </div>
@@ -145,7 +145,7 @@ const HomePage = () => {
             <h2 className="text-4xl md:text-5xl font-bold mb-4">
               Advanced Security Features
             </h2>
-            <p className="text-xl text-gray-400">
+            <p className="text-xl text-gray-600">
               Comprehensive threat detection powered by real security analysis
             </p>
           </motion.div>
@@ -159,7 +159,7 @@ const HomePage = () => {
       </section>
 
       {/* How It Works Section */}
-      <section className="py-16 px-4 bg-cyber-dark/50">
+      <section className="py-16 px-4 bg-gray-50">
         <div className="max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -168,7 +168,7 @@ const HomePage = () => {
             className="text-center mb-16"
           >
             <h2 className="text-4xl md:text-5xl font-bold mb-4">How It Works</h2>
-            <p className="text-xl text-gray-400">
+            <p className="text-xl text-gray-600">
               Four steps to complete email security analysis
             </p>
           </motion.div>
@@ -190,9 +190,9 @@ const HomePage = () => {
                 className="text-center relative"
               >
                 <motion.div 
-                  className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-cyber-blue to-cyber-purple flex items-center justify-center text-2xl font-bold relative overflow-hidden"
+                  className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-gray-800 to-gray-600 flex items-center justify-center text-2xl font-bold relative overflow-hidden"
                   whileHover={{ 
-                    boxShadow: '0 0 30px rgba(0, 212, 255, 0.6)',
+                    boxShadow: '0 0 30px rgba(26, 26, 26, 0.4)',
                     scale: 1.1
                   }}
                 >
@@ -204,7 +204,7 @@ const HomePage = () => {
                   <span className="relative z-10">{item.step}</span>
                 </motion.div>
                 <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
-                <p className="text-gray-400">{item.desc}</p>
+                <p className="text-gray-600">{item.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -217,10 +217,10 @@ const HomePage = () => {
           initial={{ opacity: 0, scale: 0.9 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
-          className="max-w-4xl mx-auto text-center cyber-card bg-gradient-to-br from-cyber-dark to-cyber-bg"
+          className="max-w-4xl mx-auto text-center cyber-card bg-gradient-to-br from-gray-100 to-gray-50"
         >
           <h2 className="text-4xl font-bold mb-4">Ready to Secure Your Inbox?</h2>
-          <p className="text-xl text-gray-400 mb-8">
+          <p className="text-xl text-gray-600 mb-8">
             Start analyzing suspicious emails now with our advanced AI-powered platform
           </p>
           <Link to="/analyze">
@@ -234,7 +234,7 @@ const HomePage = () => {
       </section>
 
       {/* Technology Stack Section */}
-      <section className="py-16 px-4 bg-cyber-dark/30">
+      <section className="py-16 px-4 bg-gray-50">
         <div className="max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -245,7 +245,7 @@ const HomePage = () => {
             <h2 className="text-4xl md:text-5xl font-bold mb-4">
               Powered by Advanced Technology
             </h2>
-            <p className="text-xl text-gray-400">
+            <p className="text-xl text-gray-600">
               Built with cutting-edge security tools and frameworks
             </p>
           </motion.div>
@@ -269,20 +269,20 @@ const HomePage = () => {
                 transition={{ delay: index * 0.05 }}
                 whileHover={{ 
                   scale: 1.05,
-                  boxShadow: '0 0 20px rgba(0, 212, 255, 0.4)'
+                  boxShadow: '0 0 20px rgba(26, 26, 26, 0.2)'
                 }}
                 className="cyber-card text-center p-6 relative overflow-hidden group cursor-pointer"
               >
-                <div className="absolute inset-0 bg-gradient-to-br from-cyber-blue/10 to-cyber-purple/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="absolute inset-0 bg-gradient-to-br from-gray-800/10 to-gray-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-transparent via-cyber-blue/20 to-transparent"
+                  className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-400/20 to-transparent"
                   initial={{ x: '-100%' }}
                   whileHover={{ x: '100%' }}
                   transition={{ duration: 0.6 }}
                 />
                 <div className="relative z-10">
-                  <div className="text-lg font-bold text-cyber-blue mb-2">{tech.name}</div>
-                  <div className="text-sm text-gray-400">{tech.desc}</div>
+                  <div className="text-lg font-bold text-gray-900 mb-2">{tech.name}</div>
+                  <div className="text-sm text-gray-600">{tech.desc}</div>
                 </div>
               </motion.div>
             ))}
@@ -302,7 +302,7 @@ const HomePage = () => {
             <h2 className="text-4xl md:text-5xl font-bold mb-4">
               Multi-Layer Security Analysis
             </h2>
-            <p className="text-xl text-gray-400">
+            <p className="text-xl text-gray-600">
               Comprehensive protection through advanced detection methods
             </p>
           </motion.div>
@@ -332,7 +332,7 @@ const HomePage = () => {
                 className="cyber-card relative overflow-hidden group"
               >
                 <ScanLine duration={4} delay={index * 0.5} />
-                <h3 className="text-2xl font-bold mb-6 text-cyber-blue">{category.title}</h3>
+                <h3 className="text-2xl font-bold mb-6 text-gray-900">{category.title}</h3>
                 <ul className="space-y-3">
                   {category.metrics.map((metric, i) => (
                     <motion.li
@@ -341,9 +341,9 @@ const HomePage = () => {
                       whileInView={{ opacity: 1, x: 0 }}
                       viewport={{ once: true }}
                       transition={{ delay: index * 0.2 + i * 0.1 }}
-                      className="flex items-center text-gray-300"
+                      className="flex items-center text-gray-700"
                     >
-                      <CheckCircle className="w-5 h-5 text-cyber-green mr-3 flex-shrink-0" />
+                      <CheckCircle className="w-5 h-5 text-green-600 mr-3 flex-shrink-0" />
                       <span>{metric}</span>
                     </motion.li>
                   ))}
@@ -355,7 +355,7 @@ const HomePage = () => {
       </section>
 
       {/* FAQ Section */}
-      <section className="py-16 px-4 bg-cyber-dark/30">
+      <section className="py-16 px-4 bg-gray-50">
         <div className="max-w-4xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -366,7 +366,7 @@ const HomePage = () => {
             <h2 className="text-4xl md:text-5xl font-bold mb-4">
               Frequently Asked Questions
             </h2>
-            <p className="text-xl text-gray-400">
+            <p className="text-xl text-gray-600">
               Everything you need to know about MailShield AI
             </p>
           </motion.div>
@@ -400,11 +400,11 @@ const HomePage = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                whileHover={{ scale: 1.02, boxShadow: '0 0 20px rgba(0, 212, 255, 0.3)' }}
+                whileHover={{ scale: 1.02, boxShadow: '0 0 20px rgba(26, 26, 26, 0.15)' }}
                 className="cyber-card"
               >
-                <h3 className="text-xl font-bold mb-3 text-cyber-blue">{faq.q}</h3>
-                <p className="text-gray-300 leading-relaxed">{faq.a}</p>
+                <h3 className="text-xl font-bold mb-3 text-gray-900">{faq.q}</h3>
+                <p className="text-gray-700 leading-relaxed">{faq.a}</p>
               </motion.div>
             ))}
           </div>
@@ -419,7 +419,7 @@ const HomePage = () => {
           viewport={{ once: true }}
           className="max-w-5xl mx-auto text-center"
         >
-          <div className="cyber-card bg-gradient-to-br from-cyber-blue/20 via-cyber-purple/20 to-cyber-red/20 border-2 border-cyber-blue/50 relative overflow-hidden">
+          <div className="cyber-card bg-gradient-to-br from-gray-100 via-gray-50 to-gray-100 border-2 border-gray-300 relative overflow-hidden">
             <motion.div
               className="absolute inset-0 opacity-30"
               animate={{
@@ -431,7 +431,7 @@ const HomePage = () => {
                 repeatType: 'reverse',
               }}
               style={{
-                backgroundImage: 'linear-gradient(45deg, rgba(0, 212, 255, 0.1) 25%, transparent 25%, transparent 75%, rgba(0, 212, 255, 0.1) 75%, rgba(0, 212, 255, 0.1)), linear-gradient(45deg, rgba(0, 212, 255, 0.1) 25%, transparent 25%, transparent 75%, rgba(0, 212, 255, 0.1) 75%, rgba(0, 212, 255, 0.1))',
+                backgroundImage: 'linear-gradient(45deg, rgba(26, 26, 26, 0.05) 25%, transparent 25%, transparent 75%, rgba(26, 26, 26, 0.05) 75%, rgba(26, 26, 26, 0.05)), linear-gradient(45deg, rgba(26, 26, 26, 0.05) 25%, transparent 25%, transparent 75%, rgba(26, 26, 26, 0.05) 75%, rgba(26, 26, 26, 0.05))',
                 backgroundSize: '60px 60px',
                 backgroundPosition: '0 0, 30px 30px',
               }}
@@ -440,7 +440,7 @@ const HomePage = () => {
               <h2 className="text-5xl font-bold mb-6">
                 Join the <span className="gradient-text">Cyber Defense</span> Revolution
               </h2>
-              <p className="text-2xl text-gray-300 mb-10 max-w-3xl mx-auto">
+              <p className="text-2xl text-gray-700 mb-10 max-w-3xl mx-auto">
                 Protect yourself and your organization from evolving email threats with real-time AI analysis
               </p>
               <div className="flex flex-col sm:flex-row gap-6 justify-center">
@@ -467,10 +467,10 @@ const HomePage = () => {
 
 const FeatureCard = ({ icon: Icon, title, description, color, index }) => {
   const colorClasses = {
-    blue: 'from-cyber-blue to-blue-600',
-    purple: 'from-cyber-purple to-purple-600',
-    green: 'from-cyber-green to-green-600',
-    red: 'from-cyber-red to-red-600',
+    blue: 'from-gray-700 to-gray-600',
+    purple: 'from-gray-600 to-gray-500',
+    green: 'from-gray-700 to-gray-600',
+    red: 'from-red-600 to-red-500',
   };
 
   return (
@@ -479,7 +479,7 @@ const FeatureCard = ({ icon: Icon, title, description, color, index }) => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: index * 0.1 }}
-      whileHover={{ y: -5, boxShadow: '0 10px 40px rgba(0, 212, 255, 0.2)' }}
+      whileHover={{ y: -5, boxShadow: '0 10px 40px rgba(26, 26, 26, 0.1)' }}
       className="cyber-card relative overflow-hidden h-full p-8"
     >
       <div className="flex items-start gap-4">
@@ -487,8 +487,8 @@ const FeatureCard = ({ icon: Icon, title, description, color, index }) => {
           <Icon className="w-6 h-6 text-white" />
         </div>
         <div className="flex-1">
-          <h3 className="text-xl font-bold text-white mb-2">{title}</h3>
-          <p className="text-gray-400 text-sm leading-relaxed">{description}</p>
+          <h3 className="text-xl font-bold text-gray-900 mb-2">{title}</h3>
+          <p className="text-gray-600 text-sm leading-relaxed">{description}</p>
         </div>
       </div>
     </motion.div>

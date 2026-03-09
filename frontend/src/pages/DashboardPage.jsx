@@ -56,10 +56,10 @@ const DashboardPage = () => {
 
   // Prepare data for charts
   const riskDistributionData = [
-    { name: 'Safe', value: stats.risk_distribution.safe, color: '#00ff88' },
-    { name: 'Suspicious', value: stats.risk_distribution.suspicious, color: '#ffcc00' },
-    { name: 'Phishing', value: stats.risk_distribution.phishing, color: '#ff9500' },
-    { name: 'Malicious', value: stats.risk_distribution.malicious, color: '#ff3366' },
+    { name: 'Safe', value: stats.risk_distribution.safe, color: '#22c55e' },
+    { name: 'Suspicious', value: stats.risk_distribution.suspicious, color: '#eab308' },
+    { name: 'Phishing', value: stats.risk_distribution.phishing, color: '#f97316' },
+    { name: 'Malicious', value: stats.risk_distribution.malicious, color: '#dc2626' },
   ];
 
   return (
@@ -72,7 +72,7 @@ const DashboardPage = () => {
           className="mb-12"
         >
           <h1 className="text-4xl md:text-5xl font-bold mb-4">Security Dashboard</h1>
-          <p className="text-xl text-gray-400">
+          <p className="text-xl text-gray-600">
             Real-time threat analysis and security metrics
           </p>
         </motion.div>
@@ -117,27 +117,27 @@ const DashboardPage = () => {
             <h3 className="text-xl font-bold mb-6">Weekly Threat Activity</h3>
             <ResponsiveContainer width="100%" height={300}>
               <BarChart data={weeklyActivity}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#00d4ff20" />
+                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
                 <XAxis
                   dataKey="day_name"
-                  stroke="#888"
-                  tick={{ fill: '#888', fontSize: 12 }}
+                  stroke="#666"
+                  tick={{ fill: '#666', fontSize: 12 }}
                 />
-                <YAxis stroke="#888" tick={{ fill: '#888', fontSize: 12 }} />
+                <YAxis stroke="#666" tick={{ fill: '#666', fontSize: 12 }} />
                 <Tooltip
                   contentStyle={{
-                    backgroundColor: '#0d1117',
-                    border: '1px solid #00d4ff',
+                    backgroundColor: '#ffffff',
+                    border: '1px solid #d1d5db',
                     borderRadius: '8px',
                   }}
-                  labelStyle={{ color: '#00d4ff' }}
+                  labelStyle={{ color: '#1f2937' }}
                 />
                 <Legend
-                  wrapperStyle={{ color: '#888' }}
+                  wrapperStyle={{ color: '#666' }}
                   iconType="circle"
                 />
-                <Bar dataKey="total_analyzed" fill="#00d4ff" name="Total Analyzed" radius={[8, 8, 0, 0]} />
-                <Bar dataKey="threats_detected" fill="#ff3366" name="Threats" radius={[8, 8, 0, 0]} />
+                <Bar dataKey="total_analyzed" fill="#3b82f6" name="Total Analyzed" radius={[8, 8, 0, 0]} />
+                <Bar dataKey="threats_detected" fill="#dc2626" name="Threats" radius={[8, 8, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </motion.div>
@@ -168,8 +168,8 @@ const DashboardPage = () => {
                 </Pie>
                 <Tooltip
                   contentStyle={{
-                    backgroundColor: '#0d1117',
-                    border: '1px solid #00d4ff',
+                    backgroundColor: '#ffffff',
+                    border: '1px solid #d1d5db',
                     borderRadius: '8px',
                   }}
                 />
@@ -253,24 +253,24 @@ const DashboardPage = () => {
 
 const ThreatCategoryCard = ({ label, count, color, percentage }) => {
   const colorClasses = {
-    green: 'from-cyber-green to-green-600',
+    green: 'from-green-500 to-green-600',
     yellow: 'from-yellow-400 to-yellow-600',
     orange: 'from-orange-400 to-orange-600',
-    red: 'from-cyber-red to-red-600',
+    red: 'from-red-500 to-red-600',
   };
 
   const textColors = {
-    green: 'text-cyber-green',
-    yellow: 'text-yellow-400',
-    orange: 'text-orange-400',
-    red: 'text-cyber-red',
+    green: 'text-green-600',
+    yellow: 'text-yellow-600',
+    orange: 'text-orange-600',
+    red: 'text-red-600',
   };
 
   return (
-    <div className="p-4 bg-cyber-bg border border-cyber-blue/20 rounded-lg hover:border-cyber-blue/50 transition-colors">
-      <div className="text-sm text-gray-400 mb-2">{label}</div>
+    <div className="p-4 bg-gray-50 border border-gray-200 rounded-lg hover:border-gray-300 transition-colors">
+      <div className="text-sm text-gray-600 mb-2">{label}</div>
       <div className={`text-3xl font-bold ${textColors[color]} mb-1`}>{count}</div>
-      <div className="w-full h-2 bg-cyber-dark rounded-full overflow-hidden">
+      <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
         <div
           className={`h-full bg-gradient-to-r ${colorClasses[color]}`}
           style={{ width: `${percentage}%` }}
@@ -284,10 +284,10 @@ const ThreatCategoryCard = ({ label, count, color, percentage }) => {
 const ThreatItem = ({ threat, index }) => {
   const getRiskColor = (level) => {
     const colors = {
-      safe: 'text-cyber-green border-cyber-green/30 bg-cyber-green/10',
-      suspicious: 'text-yellow-400 border-yellow-500/30 bg-yellow-500/10',
-      phishing: 'text-orange-400 border-orange-500/30 bg-orange-500/10',
-      malicious: 'text-cyber-red border-cyber-red/30 bg-cyber-red/10',
+      safe: 'text-green-700 border-green-300 bg-green-50',
+      suspicious: 'text-yellow-700 border-yellow-300 bg-yellow-50',
+      phishing: 'text-orange-700 border-orange-300 bg-orange-50',
+      malicious: 'text-red-700 border-red-300 bg-red-50',
     };
     return colors[level] || colors.suspicious;
   };
@@ -297,7 +297,7 @@ const ThreatItem = ({ threat, index }) => {
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: index * 0.1 }}
-      className="p-4 bg-cyber-bg border border-cyber-blue/20 rounded-lg hover:border-cyber-blue/50 transition-colors"
+      className="p-4 bg-gray-50 border border-gray-200 rounded-lg hover:border-gray-300 transition-colors"
     >
       <div className="flex items-start justify-between">
         <div className="flex-1">
@@ -309,16 +309,16 @@ const ThreatItem = ({ threat, index }) => {
               {new Date(threat.analyzed_at).toLocaleString()}
             </span>
           </div>
-          <div className="text-gray-400 text-sm mb-1">
-            From: <span className="text-gray-300">{threat.sender_email}</span>
+          <div className="text-gray-600 text-sm mb-1">
+            From: <span className="text-gray-900">{threat.sender_email}</span>
           </div>
-          <div className="text-white font-medium">{threat.subject}</div>
+          <div className="text-gray-900 font-medium">{threat.subject}</div>
           <div className="flex items-center space-x-4 mt-2 text-xs text-gray-500">
             <span>Spam: {(threat.spam_score * 100).toFixed(0)}%</span>
             <span>Phishing: {(threat.phishing_probability * 100).toFixed(0)}%</span>
           </div>
         </div>
-        <AlertTriangle className="w-5 h-5 text-cyber-red flex-shrink-0" />
+        <AlertTriangle className="w-5 h-5 text-red-600 flex-shrink-0" />
       </div>
     </motion.div>
   );

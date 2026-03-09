@@ -124,7 +124,7 @@ Content-Type: text/html; charset="UTF-8"
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-8"
         >
-          <div className="inline-flex items-center justify-center w-16 h-16 mb-4 rounded-full bg-gradient-to-br from-cyber-blue to-cyber-purple">
+          <div className="inline-flex items-center justify-center w-16 h-16 mb-4 rounded-full bg-gradient-to-br from-gray-800 to-gray-600">
             <FileText className="w-8 h-8 text-white" />
           </div>
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
@@ -137,21 +137,21 @@ Content-Type: text/html; charset="UTF-8"
           {/* Instructions */}
           <div className="cyber-card max-w-3xl mx-auto mb-8 text-left">
             <h3 className="text-lg font-bold mb-3 flex items-center">
-              <Mail className="w-5 h-5 mr-2 text-cyber-blue" />
+              <Mail className="w-5 h-5 mr-2 text-gray-900" />
               How to get email source:
             </h3>
             <div className="grid md:grid-cols-3 gap-4 text-sm">
-              <div className="bg-cyber-darker p-3 rounded-lg">
-                <p className="font-semibold mb-1 text-cyber-blue">Gmail</p>
-                <p className="text-gray-400">Open email → ⋮ (three dots) → "Show original" → Copy to clipboard</p>
+              <div className="bg-gray-100 p-3 rounded-lg">
+                <p className="font-semibold mb-1 text-gray-900">Gmail</p>
+                <p className="text-gray-600">Open email → ⋮ (three dots) → "Show original" → Copy to clipboard</p>
               </div>
-              <div className="bg-cyber-darker p-3 rounded-lg">
-                <p className="font-semibold mb-1 text-cyber-purple">Outlook</p>
-                <p className="text-gray-400">Open email → ⋯ (More actions) → "View message source"</p>
+              <div className="bg-gray-100 p-3 rounded-lg">
+                <p className="font-semibold mb-1 text-gray-900">Outlook</p>
+                <p className="text-gray-600">Open email → ⋯ (More actions) → "View message source"</p>
               </div>
-              <div className="bg-cyber-darker p-3 rounded-lg">
-                <p className="font-semibold mb-1 text-cyber-green">Yahoo</p>
-                <p className="text-gray-400">Open email → More → "View raw message"</p>
+              <div className="bg-gray-100 p-3 rounded-lg">
+                <p className="font-semibold mb-1 text-gray-900">Yahoo</p>
+                <p className="text-gray-600">Open email → More → "View raw message"</p>
               </div>
             </div>
           </div>
@@ -178,7 +178,7 @@ Subject: Email Subject
 Date: Mon, 1 Jan 2026 10:00:00
 ...
 "
-              className="w-full h-96 px-4 py-3 bg-cyber-dark border border-cyber-blue/30 rounded-lg text-white font-mono text-sm focus:border-cyber-blue focus:ring-1 focus:ring-cyber-blue outline-none resize-none"
+              className="w-full h-96 px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg text-gray-900 font-mono text-sm focus:border-gray-600 focus:ring-1 focus:ring-gray-400 outline-none resize-none"
             />
 
             <div className="flex gap-4 mt-4">
@@ -187,7 +187,7 @@ Date: Mon, 1 Jan 2026 10:00:00
                 whileTap={{ scale: 0.98 }}
                 onClick={handleAnalyze}
                 disabled={loading}
-                className="flex-1 px-6 py-3 bg-gradient-to-r from-cyber-blue to-cyber-purple rounded-lg text-white font-semibold hover:shadow-lg hover:shadow-cyber-blue/50 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 px-6 py-3 bg-gray-900 rounded-lg text-white font-semibold hover:bg-gray-800 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Analyze Email Source
               </motion.button>
@@ -196,7 +196,7 @@ Date: Mon, 1 Jan 2026 10:00:00
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={loadDemo}
-                className="px-6 py-3 bg-cyber-dark border border-cyber-blue rounded-lg text-white hover:bg-cyber-blue/20 transition-colors"
+                className="px-6 py-3 bg-gray-900 border border-gray-700 rounded-lg text-white hover:bg-gray-800 transition-colors"
               >
                 Load Demo
               </motion.button>
@@ -206,7 +206,7 @@ Date: Mon, 1 Jan 2026 10:00:00
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => { setResults(null); setEmailSource(''); }}
-                  className="px-6 py-3 bg-cyber-dark border border-gray-600 rounded-lg text-gray-300 hover:bg-gray-700 transition-colors"
+                  className="px-6 py-3 bg-white border border-gray-300 rounded-lg text-gray-900 hover:bg-gray-50 transition-colors"
                 >
                   Clear
                 </motion.button>
@@ -257,7 +257,7 @@ Date: Mon, 1 Jan 2026 10:00:00
               </div>
 
               {/* Risk Score Bar */}
-              <div className="relative h-4 bg-cyber-darker rounded-full overflow-hidden mb-6">
+              <div className="relative h-4 bg-gray-200 rounded-full overflow-hidden mb-6">
                 <motion.div
                   initial={{ width: 0 }}
                   animate={{ width: `${results.overall_risk_score}%` }}
@@ -267,7 +267,7 @@ Date: Mon, 1 Jan 2026 10:00:00
               </div>
 
               {/* One-Word Safety Verdict */}
-              <div className="border-t border-gray-700 pt-4">
+              <div className="border-t border-gray-300 pt-4">
                 <div className="text-center">
                   <div className="text-sm text-gray-400 mb-2">Safety Verdict</div>
                   <div className={`text-5xl font-black ${results.overall_risk_score < 30 ? 'text-green-400' : results.overall_risk_score < 60 ? 'text-yellow-400' : 'text-red-400'}`}>
@@ -300,32 +300,32 @@ Date: Mon, 1 Jan 2026 10:00:00
 
               {/* Authentication */}
               <div className="cyber-card">
-                <h3 className="text-lg font-bold mb-3 flex items-center\">
-                  <Shield className="w-4 h-4 mr-2 text-cyber-blue\" />
+                <h3 className="text-lg font-bold mb-3 flex items-center">
+                  <Shield className="w-4 h-4 mr-2 text-gray-900" />
                   Authentication
                 </h3>
                 <div className="grid grid-cols-4 gap-2">
-                  <div className="bg-cyber-darker p-2 rounded text-center">
-                    <div className="text-xs text-gray-400 mb-1">SPF</div>
-                    <div className={`font-bold text-xs uppercase ${results.authentication.spf === 'pass' ? 'text-green-500' : 'text-red-500'}`}>
+                  <div className="bg-gray-100 p-2 rounded text-center">
+                    <div className="text-xs text-gray-600 mb-1">SPF</div>
+                    <div className={`font-bold text-xs uppercase ${results.authentication.spf === 'pass' ? 'text-green-600' : 'text-red-600'}`}>
                       {results.authentication.spf === 'pass' ? '✓' : '✗'}
                     </div>
                   </div>
-                  <div className="bg-cyber-darker p-2 rounded text-center">
-                    <div className="text-xs text-gray-400 mb-1">DKIM</div>
-                    <div className={`font-bold text-xs uppercase ${results.authentication.dkim === 'pass' ? 'text-green-500' : 'text-red-500'}`}>
+                  <div className="bg-gray-100 p-2 rounded text-center">
+                    <div className="text-xs text-gray-600 mb-1">DKIM</div>
+                    <div className={`font-bold text-xs uppercase ${results.authentication.dkim === 'pass' ? 'text-green-600' : 'text-red-600'}`}>
                       {results.authentication.dkim === 'pass' ? '✓' : '✗'}
                     </div>
                   </div>
-                  <div className="bg-cyber-darker p-2 rounded text-center">
-                    <div className="text-xs text-gray-400 mb-1">DMARC</div>
-                    <div className={`font-bold text-xs uppercase ${results.authentication.dmarc === 'pass' ? 'text-green-500' : 'text-red-500'}`}>
+                  <div className="bg-gray-100 p-2 rounded text-center">
+                    <div className="text-xs text-gray-600 mb-1">DMARC</div>
+                    <div className={`font-bold text-xs uppercase ${results.authentication.dmarc === 'pass' ? 'text-green-600' : 'text-red-600'}`}>
                       {results.authentication.dmarc === 'pass' ? '✓' : '✗'}
                     </div>
                   </div>
-                  <div className="bg-cyber-darker p-2 rounded text-center">
-                    <div className="text-xs text-gray-400 mb-1">Status</div>
-                    <div className={`font-bold text-xs uppercase ${results.authentication.overall === 'excellent' || results.authentication.overall === 'good' ? 'text-green-500' : 'text-red-500'}`}>
+                  <div className="bg-gray-100 p-2 rounded text-center">
+                    <div className="text-xs text-gray-600 mb-1">Status</div>
+                    <div className={`font-bold text-xs uppercase ${results.authentication.overall === 'excellent' || results.authentication.overall === 'good' ? 'text-green-600' : 'text-red-600'}`}>
                       {results.authentication.overall === 'excellent' || results.authentication.overall === 'good' ? '✓' : '✗'}
                     </div>
                   </div>
@@ -337,37 +337,37 @@ Date: Mon, 1 Jan 2026 10:00:00
             {results.url_analyses && results.url_analyses.length > 0 && results.url_analyses.some(a => a.ip_reputation?.ip_address) && (
               <div className="cyber-card">
                 <h3 className="text-xl font-bold mb-4 flex items-center">
-                  <Globe className="w-5 h-5 mr-2 text-cyber-blue" />
+                  <Globe className="w-5 h-5 mr-2 text-gray-900" />
                   URL Location Details
                 </h3>
                 <div className="space-y-3">
                   {results.url_analyses.filter(a => a.ip_reputation?.ip_address).map((analysis, idx) => (
-                    <div key={idx} className="bg-cyber-darker p-4 rounded-lg">
+                    <div key={idx} className="bg-gray-100 p-4 rounded-lg">
                       <div className="mb-2">
                         <div className="text-xs text-gray-500 mb-1">URL</div>
-                        <div className="font-mono text-xs text-gray-400 truncate" title={analysis.url}>{analysis.url}</div>
+                        <div className="font-mono text-xs text-gray-700 truncate" title={analysis.url}>{analysis.url}</div>
                       </div>
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
                         <div>
-                          <span className="text-gray-400">IP:</span>
-                          <div className="text-blue-400 font-mono text-xs">{analysis.ip_reputation.ip_address}</div>
+                          <span className="text-gray-600">IP:</span>
+                          <div className="text-blue-600 font-mono text-xs">{analysis.ip_reputation.ip_address}</div>
                         </div>
                         {analysis.ip_reputation.geolocation?.country && (
                           <div>
-                            <span className="text-gray-400">Country:</span>
-                            <div className="text-purple-400">{analysis.ip_reputation.geolocation.country}</div>
+                            <span className="text-gray-600">Country:</span>
+                            <div className="text-purple-600">{analysis.ip_reputation.geolocation.country}</div>
                           </div>
                         )}
                         {analysis.ip_reputation.geolocation?.city && analysis.ip_reputation.geolocation.city !== 'Unknown' && (
                           <div>
-                            <span className="text-gray-400">City:</span>
-                            <div className="text-cyan-400">{analysis.ip_reputation.geolocation.city}</div>
+                            <span className="text-gray-600">City:</span>
+                            <div className="text-blue-600">{analysis.ip_reputation.geolocation.city}</div>
                           </div>
                         )}
                         {analysis.ip_reputation.geolocation?.isp && analysis.ip_reputation.geolocation.isp !== 'Unknown' && (
                           <div>
-                            <span className="text-gray-400">ISP:</span>
-                            <div className="text-green-400 truncate" title={analysis.ip_reputation.geolocation.isp}>
+                            <span className="text-gray-600">ISP:</span>
+                            <div className="text-green-600 truncate" title={analysis.ip_reputation.geolocation.isp}>
                               {analysis.ip_reputation.geolocation.isp.split(',')[0]}
                             </div>
                           </div>
@@ -390,7 +390,7 @@ Date: Mon, 1 Jan 2026 10:00:00
                   The following links display one URL but actually go to a different destination. This is a common phishing technique!
                 </p>
                 {results.masked_urls.map((masked, idx) => (
-                  <div key={idx} className="bg-cyber-darker p-4 rounded-lg mb-3">
+                  <div key={idx} className="bg-gray-100 p-4 rounded-lg mb-3">
                     <div className="flex items-start gap-3">
                       <XCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-1" />
                       <div className="flex-1">
@@ -414,13 +414,13 @@ Date: Mon, 1 Jan 2026 10:00:00
             {results.url_analyses && results.url_analyses.length > 0 && (
               <div className="cyber-card">
                 <h3 className="text-xl font-bold mb-4 flex items-center">
-                  <Shield className="w-5 h-5 mr-2 text-cyber-blue" />
+                  <Shield className="w-5 h-5 mr-2 text-gray-900" />
                   URL Security Analysis ({results.url_analyses.length})
                 </h3>
                 
                 <div className="space-y-4">
                   {results.url_analyses.map((analysis, idx) => (
-                    <div key={idx} className={`bg-cyber-darker border-2 rounded-lg p-4 ${
+                    <div key={idx} className={`bg-gray-100 border-2 rounded-lg p-4 ${
                       analysis.verdict === 'malicious' ? 'border-red-500/50' :
                       analysis.verdict === 'suspicious' ? 'border-yellow-500/50' :
                       'border-green-500/50'
@@ -430,7 +430,7 @@ Date: Mon, 1 Jan 2026 10:00:00
                       <div className="flex items-start justify-between gap-4 mb-4">
                         <div className="flex-1 min-w-0">
                           <div className="text-xs text-gray-500 mb-1">URL #{idx + 1}</div>
-                          <div className="font-mono text-sm break-all text-gray-300">{analysis.url}</div>
+                          <div className="font-mono text-sm break-all text-gray-700">{analysis.url}</div>
                         </div>
                         <div className={`flex-shrink-0 px-3 py-1 rounded-full text-xs font-bold uppercase ${
                           analysis.verdict === 'malicious' ? 'bg-red-500 text-white' :
@@ -445,21 +445,21 @@ Date: Mon, 1 Jan 2026 10:00:00
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
                         
                         {/* Safety Score */}
-                        <div className="bg-cyber-dark p-3 rounded">
-                          <div className="text-xs text-gray-400 mb-1">Safety</div>
+                        <div className="bg-gray-50 p-3 rounded">
+                          <div className="text-xs text-gray-600 mb-1">Safety</div>
                           <div className={`text-xl font-bold ${
-                            analysis.safety_score >= 0.7 ? 'text-green-400' :
-                            analysis.safety_score >= 0.4 ? 'text-yellow-400' :
-                            'text-red-400'
+                            analysis.safety_score >= 0.7 ? 'text-green-600' :
+                            analysis.safety_score >= 0.4 ? 'text-yellow-600' :
+                            'text-red-600'
                           }`}>
                             {(analysis.safety_score * 100).toFixed(0)}%
                           </div>
                         </div>
 
                         {/* Domain Age */}
-                        <div className="bg-cyber-dark p-3 rounded">
-                          <div className="text-xs text-gray-400 mb-1">Domain Age</div>
-                          <div className="text-sm font-bold text-cyan-400">
+                        <div className="bg-gray-50 p-3 rounded">
+                          <div className="text-xs text-gray-600 mb-1">Domain Age</div>
+                          <div className="text-sm font-bold text-blue-600">
                             {analysis.domain_reputation?.domain_age && analysis.domain_reputation.domain_age !== 'Data Unavailable' 
                               ? analysis.domain_reputation.domain_age 
                               : 'Unknown'}
@@ -467,17 +467,17 @@ Date: Mon, 1 Jan 2026 10:00:00
                         </div>
 
                         {/* SSL Status */}
-                        <div className="bg-cyber-dark p-3 rounded">
-                          <div className="text-xs text-gray-400 mb-1">SSL</div>
-                          <div className={`text-sm font-bold ${analysis.ssl_valid ? 'text-green-400' : 'text-red-400'}`}>
+                        <div className="bg-gray-50 p-3 rounded">
+                          <div className="text-xs text-gray-600 mb-1">SSL</div>
+                          <div className={`text-sm font-bold ${analysis.ssl_valid ? 'text-green-600' : 'text-red-600'}`}>
                             {analysis.ssl_valid ? '✓ Valid' : '✗ Invalid'}
                           </div>
                         </div>
 
                         {/* Login Forms */}
-                        <div className="bg-cyber-dark p-3 rounded">
-                          <div className="text-xs text-gray-400 mb-1">Login Form</div>
-                          <div className={`text-sm font-bold ${analysis.login_forms_detected ? 'text-yellow-400' : 'text-gray-400'}`}>
+                        <div className="bg-gray-50 p-3 rounded">
+                          <div className="text-xs text-gray-600 mb-1">Login Form</div>
+                          <div className={`text-sm font-bold ${analysis.login_forms_detected ? 'text-yellow-600' : 'text-gray-600'}`}>
                             {analysis.login_forms_detected ? '⚠ Detected' : '○ None'}
                           </div>
                         </div>
@@ -500,14 +500,14 @@ Date: Mon, 1 Jan 2026 10:00:00
 
                       {/* Warnings - Only if present */}
                       {analysis.warnings && analysis.warnings.length > 0 && (
-                        <div className="bg-yellow-500/10 border border-yellow-500/30 p-3 rounded">
-                          <div className="text-xs text-yellow-400 font-bold mb-2">⚠️ Security Warnings</div>
+                        <div className="bg-yellow-50 border border-yellow-200 p-3 rounded">
+                          <div className="text-xs text-yellow-800 font-bold mb-2">⚠️ Security Warnings</div>
                           <ul className="space-y-1">
                             {analysis.warnings.slice(0, 3).map((warning, i) => (
-                              <li key={i} className="text-xs text-gray-300">• {warning}</li>
+                              <li key={i} className="text-xs text-gray-700">• {warning}</li>
                             ))}
                             {analysis.warnings.length > 3 && (
-                              <li className="text-xs text-gray-400 italic">+ {analysis.warnings.length - 3} more warnings</li>
+                              <li className="text-xs text-gray-600 italic">+ {analysis.warnings.length - 3} more warnings</li>
                             )}
                           </ul>
                         </div>
@@ -525,7 +525,7 @@ Date: Mon, 1 Jan 2026 10:00:00
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => { setResults(null); }}
-                className="flex-1 px-6 py-3 bg-gradient-to-r from-cyber-blue to-cyber-purple rounded-lg text-white font-semibold hover:shadow-lg hover:shadow-cyber-blue/50 transition-all"
+                className="flex-1 px-6 py-3 bg-gray-900 rounded-lg text-white font-semibold hover:bg-gray-800 transition-all"
               >
                 Analyze Another Email
               </motion.button>

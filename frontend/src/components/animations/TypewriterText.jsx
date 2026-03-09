@@ -19,7 +19,7 @@ export default function TypewriterText({ text, delay = 50, className = '' }) {
     <span className={className}>
       {displayText}
       {currentIndex < text.length && (
-        <span className="animate-pulse text-cyber-blue">|</span>
+        <span className="animate-pulse text-gray-900">|</span>
       )}
     </span>
   );

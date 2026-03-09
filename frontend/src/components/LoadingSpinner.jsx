@@ -40,7 +40,7 @@ const LoadingSpinner = ({ message = 'Analyzing...' }) => {
             custom={i}
             variants={particleVariants}
             animate="animate"
-            className="absolute w-1 h-1 bg-cyber-blue rounded-full"
+            className="absolute w-1 h-1 bg-gray-400 rounded-full"
             style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
@@ -61,7 +61,7 @@ const LoadingSpinner = ({ message = 'Analyzing...' }) => {
           }}
           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
         >
-          <div className="w-full h-full rounded-full bg-gradient-to-r from-cyber-blue to-cyber-purple blur-xl opacity-50" />
+          <div className="w-full h-full rounded-full bg-gradient-to-r from-gray-600 to-gray-500 blur-xl opacity-30" />
         </motion.div>
 
         {/* Multiple rotating rings */}
@@ -78,7 +78,7 @@ const LoadingSpinner = ({ message = 'Analyzing...' }) => {
             transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
           >
             <motion.div
-              className="absolute -top-2 left-1/2 w-4 h-4 bg-cyber-blue rounded-full shadow-lg shadow-cyber-blue"
+              className="absolute -top-2 left-1/2 w-4 h-4 bg-gray-700 rounded-full shadow-lg shadow-gray-700"
               animate={{ scale: [1, 1.3, 1] }}
               transition={{ duration: 1, repeat: Infinity }}
             />
@@ -107,14 +107,14 @@ const LoadingSpinner = ({ message = 'Analyzing...' }) => {
           
           {/* Center pulsing core */}
           <motion.div
-            className="absolute inset-0 m-auto w-6 h-6 rounded-full bg-gradient-to-br from-cyber-blue via-cyber-purple to-cyan-400"
+            className="absolute inset-0 m-auto w-6 h-6 rounded-full bg-gradient-to-br from-gray-700 via-gray-600 to-gray-500"
             animate={{ 
               scale: [1, 1.5, 1],
               rotate: [0, 180, 360],
               boxShadow: [
-                '0 0 20px rgba(59, 130, 246, 0.5)',
-                '0 0 40px rgba(139, 92, 246, 0.8)',
-                '0 0 20px rgba(59, 130, 246, 0.5)',
+                '0 0 20px rgba(55, 65, 81, 0.5)',
+                '0 0 40px rgba(75, 85, 99, 0.8)',
+                '0 0 20px rgba(55, 65, 81, 0.5)',
               ]
             }}
             transition={{ duration: 2, repeat: Infinity }}
@@ -127,7 +127,7 @@ const LoadingSpinner = ({ message = 'Analyzing...' }) => {
             custom={0}
             variants={iconVariants}
             animate="animate"
-            className="absolute -top-12 -left-12 text-cyber-blue opacity-30"
+            className="absolute -top-12 -left-12 text-gray-600 opacity-20"
           >
             <Shield className="w-8 h-8" />
           </motion.div>
@@ -136,7 +136,7 @@ const LoadingSpinner = ({ message = 'Analyzing...' }) => {
             custom={1}
             variants={iconVariants}
             animate="animate"
-            className="absolute -top-12 -right-12 text-cyber-purple opacity-30"
+            className="absolute -top-12 -right-12 text-gray-500 opacity-20"
           >
             <Lock className="w-8 h-8" />
           </motion.div>
@@ -145,7 +145,7 @@ const LoadingSpinner = ({ message = 'Analyzing...' }) => {
             custom={2}
             variants={iconVariants}
             animate="animate"
-            className="absolute -bottom-12 -left-12 text-cyan-400 opacity-30"
+            className="absolute -bottom-12 -left-12 text-gray-600 opacity-20"
           >
             <Search className="w-8 h-8" />
           </motion.div>
@@ -154,7 +154,7 @@ const LoadingSpinner = ({ message = 'Analyzing...' }) => {
             custom={3}
             variants={iconVariants}
             animate="animate"
-            className="absolute -bottom-12 -right-12 text-purple-400 opacity-30"
+            className="absolute -bottom-12 -right-12 text-gray-500 opacity-20"
           >
             <Zap className="w-8 h-8" />
           </motion.div>
@@ -169,7 +169,7 @@ const LoadingSpinner = ({ message = 'Analyzing...' }) => {
         transition={{ duration: 0.5 }}
       >
         <motion.p
-          className="text-xl font-bold bg-gradient-to-r from-cyber-blue via-cyan-400 to-cyber-purple bg-clip-text text-transparent mb-2"
+          className="text-xl font-bold bg-gradient-to-r from-gray-800 via-gray-700 to-gray-900 bg-clip-text text-transparent mb-2"
           animate={{ 
             backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
           }}
@@ -184,7 +184,7 @@ const LoadingSpinner = ({ message = 'Analyzing...' }) => {
           {[0, 1, 2].map((i) => (
             <motion.div
               key={i}
-              className="w-2 h-2 bg-cyber-blue rounded-full"
+              className="w-2 h-2 bg-gray-700 rounded-full"
               animate={{
                 scale: [1, 1.5, 1],
                 opacity: [0.3, 1, 0.3],
@@ -200,11 +200,11 @@ const LoadingSpinner = ({ message = 'Analyzing...' }) => {
       </motion.div>
 
       {/* Progress bar with gradient */}
-      <div className="relative w-80 h-2 bg-cyber-dark rounded-full overflow-hidden z-10 shadow-inner">
+      <div className="relative w-80 h-2 bg-gray-200 rounded-full overflow-hidden z-10 shadow-inner">
         <motion.div
           className="absolute h-full w-full rounded-full"
           style={{
-            background: 'linear-gradient(90deg, #3b82f6, #8b5cf6, #06b6d4, #3b82f6)',
+            background: 'linear-gradient(90deg, #3b82f6, #8b5cf6, #6b7280, #3b82f6)',
             backgroundSize: '200% 100%',
           }}
           animate={{
@@ -233,9 +233,9 @@ const LoadingSpinner = ({ message = 'Analyzing...' }) => {
         transition={{ delay: 0.5 }}
       >
         {[
-          { label: 'Scanning', color: 'text-cyan-400' },
-          { label: 'Analyzing', color: 'text-cyber-blue' },
-          { label: 'Processing', color: 'text-purple-400' },
+          { label: 'Scanning', color: 'text-blue-600' },
+          { label: 'Analyzing', color: 'text-gray-700' },
+          { label: 'Processing', color: 'text-purple-600' },
         ].map((item, i) => (
           <motion.div
             key={item.label}

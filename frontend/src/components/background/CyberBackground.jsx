@@ -72,7 +72,7 @@ export default function CyberBackground() {
       draw() {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius + Math.sin(this.pulse) * 0.5, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(0, 212, 255, ${this.opacity + Math.sin(this.pulse) * 0.1})`;
+        ctx.fillStyle = `rgba(100, 100, 100, ${this.opacity + Math.sin(this.pulse) * 0.1})`;
         ctx.fill();
       }
     }
@@ -93,7 +93,7 @@ export default function CyberBackground() {
       }
 
       draw() {
-        ctx.strokeStyle = `rgba(0, 212, 255, ${this.opacity})`;
+        ctx.strokeStyle = `rgba(150, 150, 150, ${this.opacity})`;
         ctx.lineWidth = 1;
         ctx.beginPath();
         if (this.vertical) {
@@ -123,7 +123,7 @@ export default function CyberBackground() {
           const dist = Math.sqrt(dx * dx + dy * dy);
           
           if (dist < 120) {
-            ctx.strokeStyle = `rgba(0, 212, 255, ${0.15 * (1 - dist / 120)})`;
+            ctx.strokeStyle = `rgba(150, 150, 150, ${0.15 * (1 - dist / 120)})`;
             ctx.lineWidth = 0.5;
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
@@ -150,11 +150,11 @@ export default function CyberBackground() {
 
     // Animation loop
     const animate = () => {
-      // Dark gradient background
+      // Light gradient background
       const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-      gradient.addColorStop(0, '#020617');
-      gradient.addColorStop(0.5, '#0a0e1a');
-      gradient.addColorStop(1, '#020617');
+      gradient.addColorStop(0, '#ffffff');
+      gradient.addColorStop(0.5, '#f8f8f8');
+      gradient.addColorStop(1, '#ffffff');
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -175,7 +175,7 @@ export default function CyberBackground() {
 
       // Glow effects
       ctx.shadowBlur = 20;
-      ctx.shadowColor = 'rgba(0, 212, 255, 0.3)';
+      ctx.shadowColor = 'rgba(150, 150, 150, 0.1)';
       
       // Reset scroll delta
       scrollRef.current *= 0.95;
@@ -194,18 +194,18 @@ export default function CyberBackground() {
   }, []);
 
   return (
-    <div className="fixed inset-0 -z-10 overflow-hidden">
+    <div className="fixed inset-0 -z-10 overflow-hidden bg-white">
       <canvas ref={canvasRef} className="absolute inset-0" />
       
       {/* Additional overlay effects */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(2,6,23,0.7)_70%,rgba(2,6,23,0.95)_100%)] pointer-events-none" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(200,200,200,0.1)_70%,rgba(200,200,200,0.2)_100%)] pointer-events-none" />
       
       {/* Glowing orbs */}
-      <div className="absolute top-20 left-10 w-64 h-64 bg-cyan-500/10 rounded-full blur-[100px] animate-pulse pointer-events-none" />
-      <div className="absolute bottom-20 right-10 w-72 h-72 bg-purple-500/10 rounded-full blur-[120px] animate-pulse pointer-events-none" style={{ animationDelay: '1s' }} />
+      <div className="absolute top-20 left-10 w-64 h-64 bg-gray-300/10 rounded-full blur-[100px] animate-pulse pointer-events-none" />
+      <div className="absolute bottom-20 right-10 w-72 h-72 bg-gray-400/10 rounded-full blur-[120px] animate-pulse pointer-events-none" style={{ animationDelay: '1s' }} />
       
       {/* Bottom fade for content readability */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-cyber-darker/90 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-white/40 pointer-events-none" />
     </div>
   );
 }

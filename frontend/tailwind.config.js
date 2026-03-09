@@ -8,14 +8,14 @@ export default {
     extend: {
       colors: {
         cyber: {
-          bg: '#0a0e27',
-          dark: '#0d1117',
-          darker: '#010409',
-          blue: '#00d4ff',
-          purple: '#b47eff',
-          pink: '#ff006e',
-          green: '#00ff88',
-          red: '#ff3366',
+          bg: '#ffffff',
+          dark: '#f5f5f5',
+          darker: '#f0f0f0',
+          blue: '#1a1a1a',
+          purple: '#4a4a4a',
+          pink: '#666666',
+          green: '#2d2d2d',
+          red: '#d32f2f',
         }
       },
       animation: {
@@ -31,8 +31,8 @@ export default {
       },
       keyframes: {
         glow: {
-          '0%': { boxShadow: '0 0 5px #00d4ff, 0 0 10px #00d4ff' },
-          '100%': { boxShadow: '0 0 20px #00d4ff, 0 0 30px #00d4ff' },
+          '0%': { boxShadow: '0 0 5px #1a1a1a, 0 0 10px #1a1a1a' },
+          '100%': { boxShadow: '0 0 20px #1a1a1a, 0 0 30px #1a1a1a' },
         },
         scan: {
           '0%': { transform: 'translateY(-100%)' },

@@ -83,13 +83,13 @@ PayPal Security Team`,
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-12"
         >
-          <div className="inline-flex items-center justify-center w-16 h-16 mb-4 rounded-full bg-gradient-to-br from-cyber-blue to-cyber-purple">
+          <div className="inline-flex items-center justify-center w-16 h-16 mb-4 rounded-full bg-gradient-to-br from-gray-800 to-gray-600">
             <Mail className="w-8 h-8 text-white" />
           </div>
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
             Email Security Analyzer
           </h1>
-          <p className="text-xl text-gray-400">
+          <p className="text-xl text-gray-600">
             Paste the suspicious email below for comprehensive threat analysis
           </p>
         </motion.div>
@@ -101,10 +101,10 @@ PayPal Security Team`,
           className="cyber-card"
         >
           {/* Info Banner */}
-          <div className="mb-6 p-4 bg-cyber-blue/10 border border-cyber-blue/30 rounded-lg flex items-start space-x-3">
-            <AlertCircle className="w-5 h-5 text-cyber-blue flex-shrink-0 mt-0.5" />
-            <div className="text-sm text-gray-300">
-              <strong className="text-cyber-blue">Privacy Note:</strong> Your email data is
+          <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg flex items-start space-x-3">
+            <AlertCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+            <div className="text-sm text-gray-700">
+              <strong className="text-blue-900">Privacy Note:</strong> Your email data is
               analyzed securely and not stored permanently. We only keep anonymized threat
               patterns for improving detection.
             </div>
@@ -113,7 +113,7 @@ PayPal Security Team`,
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Sender Email */}
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
                 Sender Email Address *
               </label>
               <input
@@ -129,7 +129,7 @@ PayPal Security Team`,
 
             {/* Subject */}
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
                 Email Subject *
               </label>
               <input
@@ -145,7 +145,7 @@ PayPal Security Team`,
 
             {/* Body */}
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
                 Email Body *
               </label>
               <textarea
@@ -198,10 +198,10 @@ PayPal Security Team`,
           ].map((item, index) => (
             <div
               key={index}
-              className="p-4 bg-cyber-dark/50 border border-cyber-blue/20 rounded-lg text-center"
+              className="p-4 bg-gray-50 border border-gray-200 rounded-lg text-center"
             >
-              <div className="font-semibold text-cyber-blue mb-1">{item.title}</div>
-              <div className="text-sm text-gray-400">{item.desc}</div>
+              <div className="font-semibold text-gray-900 mb-1">{item.title}</div>
+              <div className="text-sm text-gray-600">{item.desc}</div>
             </div>
           ))}
         </motion.div>
