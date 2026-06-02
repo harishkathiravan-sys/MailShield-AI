@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Mail, Send, AlertCircle } from 'lucide-react';
+import { Mail, Send, AlertCircle, ShieldCheck, Search, Cpu, Monitor, Zap } from 'lucide-react';
 import toast from 'react-hot-toast';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { analyzeEmail } from '../services/api';
@@ -9,24 +9,15 @@ import { analyzeEmail } from '../services/api';
 const AnalyzerPage = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState({
-    sender_email: '',
-    subject: '',
-    body: '',
-  });
-
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
+  const [sender, setSender] = useState('');
+  const [subject, setSubject] = useState('');
+  const [body, setBody] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Validation
-    if (!formData.sender_email || !formData.subject || !formData.body) {
+    if (!sender || !subject || !body) {
       toast.error('Please fill in all fields');
       return;
     }
@@ -34,7 +25,11 @@ const AnalyzerPage = () => {
     setLoading(true);
 
     try {
-      const result = await analyzeEmail(formData);
+      const result = await analyzeEmail({
+        sender_email: sender,
+        subject: subject,
+        body: body,
+      });
       toast.success('Analysis complete!');
       navigate(`/results/${result.id}`);
     } catch (error) {
@@ -45,25 +40,10 @@ const AnalyzerPage = () => {
     }
   };
 
-  const loadDemoEmail = () => {
-    setFormData({
-      sender_email: 'support@secure-paypal-verify.xyz',
-      subject: 'URGENT: Verify Your Account Immediately',
-      body: `Dear Valued Customer,
-
-Your PayPal account has been temporarily suspended due to unusual activity detected on your account.
-
-We need you to verify your identity immediately to restore full access to your account. If you do not verify within 24 hours, your account will be permanently closed and all funds will be frozen.
-
-Click here to verify now: http://verify-paypal-secure-login.xyz/account/verify
-
-This is an automated security measure for your protection. Please act immediately to avoid losing access to your funds.
-
-For security reasons, this link will expire in 24 hours.
-
-Thank you for your cooperation.
-PayPal Security Team`,
-    });
+  const loadDemo = () => {
+    setSender('security-alert@bank-verify-secure.com');
+    setSubject('URGENT: Suspicious activity detected on your account');
+    setBody('Dear Valued Customer,\n\nWe have detected unusual login attempts from an unrecognized device in Moscow, Russia. To protect your account, we have temporarily restricted access.\n\nPlease click the link below to verify your identity and restore access immediately:\n\nhttp://verify-account-security-portal.net/login?id=92834\n\nFailure to verify within 24 hours will lead to permanent account suspension.\n\nThank you,\nSecurity Team');
     toast.success('Demo email loaded');
   };
 
@@ -76,138 +56,124 @@ PayPal Security Team`,
   }
 
   return (
-    <div className="min-h-screen py-12 px-4">
-      <div className="max-w-4xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-12"
-        >
-          <div className="inline-flex items-center justify-center w-16 h-16 mb-4 rounded-full bg-gradient-to-br from-gray-800 to-gray-600">
-            <Mail className="w-8 h-8 text-white" />
-          </div>
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            Email Security Analyzer
-          </h1>
-          <p className="text-xl text-gray-600">
-            Paste the suspicious email below for comprehensive threat analysis
-          </p>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="cyber-card"
-        >
-          {/* Info Banner */}
-          <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg flex items-start space-x-3">
-            <AlertCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
-            <div className="text-sm text-gray-700">
-              <strong className="text-blue-900">Privacy Note:</strong> Your email data is
-              analyzed securely and not stored permanently. We only keep anonymized threat
-              patterns for improving detection.
-            </div>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="max-w-6xl mx-auto py-16 px-4"
+    >
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+        <div className="lg:col-span-2">
+          <div className="mb-10">
+            <h1 className="text-4xl font-serif font-medium text-slate-900 mb-3">Email Security Analyzer</h1>
+            <p className="text-lg text-slate-500">Paste the suspicious email below for comprehensive threat analysis</p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Sender Email */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Sender Email Address *
-              </label>
-              <input
-                type="email"
-                name="sender_email"
-                value={formData.sender_email}
-                onChange={handleChange}
-                placeholder="suspicious@example.com"
-                className="cyber-input"
-                required
-              />
+          <div className="bg-white rounded-[2rem] border border-slate-200 shadow-sm p-8 md:p-10">
+            <div className="mb-8 p-5 bg-blue-50/50 border border-blue-100 rounded-2xl flex gap-4 items-start">
+              <div className="p-2 bg-blue-100 rounded-lg text-blue-600 shrink-0">
+                <ShieldCheck className="w-5 h-5" />
+              </div>
+              <p className="text-sm text-blue-800 leading-relaxed">
+                <span className="font-bold">Privacy Note:</span> Your email data is analyzed securely and not stored permanently. We only keep anonymized threat patterns for improving detection.
+              </p>
             </div>
 
-            {/* Subject */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Email Subject *
-              </label>
-              <input
-                type="text"
-                name="subject"
-                value={formData.subject}
-                onChange={handleChange}
-                placeholder="Enter email subject"
-                className="cyber-input"
-                required
-              />
-            </div>
+            <form onSubmit={handleSubmit} className="space-y-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-bold text-slate-700 mb-2.5">Sender Email Address *</label>
+                  <input
+                    type="email"
+                    value={sender}
+                    onChange={(e) => setSender(e.target.value)}
+                    placeholder="suspicious@example.com"
+                    className="w-full px-5 py-4 rounded-2xl border border-slate-200 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all bg-slate-50/50"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-slate-700 mb-2.5">Email Subject *</label>
+                  <input
+                    type="text"
+                    value={subject}
+                    onChange={(e) => setSubject(e.target.value)}
+                    placeholder="Enter email subject"
+                    className="w-full px-5 py-4 rounded-2xl border border-slate-200 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all bg-slate-50/50"
+                    required
+                  />
+                </div>
+              </div>
 
-            {/* Body */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Email Body *
-              </label>
-              <textarea
-                name="body"
-                value={formData.body}
-                onChange={handleChange}
-                placeholder="Paste the full email content here..."
-                rows={12}
-                className="cyber-input resize-none"
-                required
-              />
-            </div>
+              <div>
+                <label className="block text-sm font-bold text-slate-700 mb-2.5">Email Body *</label>
+                <textarea
+                  rows={10}
+                  value={body}
+                  onChange={(e) => setBody(e.target.value)}
+                  placeholder="Paste the full email content here..."
+                  className="w-full px-5 py-4 rounded-2xl border border-slate-200 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all bg-slate-50/50 resize-none"
+                  required
+                />
+              </div>
 
-            {/* Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4">
-              <motion.button
-                type="submit"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="cyber-button flex-1 flex items-center justify-center space-x-2"
-              >
-                <Send className="w-5 h-5" />
-                <span>Analyze Email</span>
-              </motion.button>
+              <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                <button
+                  type="submit"
+                  className="flex-[2] bg-slate-900 text-white py-5 rounded-2xl font-bold hover:bg-slate-800 transition-all shadow-xl shadow-slate-200 flex items-center justify-center gap-3 group"
+                >
+                  <Zap className="w-5 h-5 text-amber-400 group-hover:scale-110 transition-transform" />
+                  Analyze Email
+                </button>
+                <button
+                  type="button"
+                  onClick={loadDemo}
+                  className="flex-1 bg-white border border-slate-200 text-slate-700 py-5 rounded-2xl font-bold hover:bg-slate-50 transition-all"
+                >
+                  Load Demo Email
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
 
-              <motion.button
-                type="button"
-                onClick={loadDemoEmail}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="cyber-button-secondary flex-1"
-              >
-                Load Demo Email
-              </motion.button>
+        <div className="space-y-8">
+          <div className="bg-slate-50 rounded-[2rem] p-10 border border-slate-100">
+            <h3 className="text-xl font-bold text-slate-900 mb-8">Analysis Features</h3>
+            <div className="space-y-10">
+              <FeatureItem icon={Search} title="Spam Detection" desc="AI-powered keyword analysis" color="text-blue-600" />
+              <FeatureItem icon={Cpu} title="Phishing Detection" desc="Pattern recognition engine" color="text-amber-600" />
+              <FeatureItem icon={Monitor} title="Link Analysis" desc="Sandbox URL testing" color="text-indigo-600" />
             </div>
-          </form>
-        </motion.div>
+          </div>
 
-        {/* Features Info */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.4 }}
-          className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4"
-        >
-          {[
-            { title: 'Spam Detection', desc: 'AI-powered keyword analysis' },
-            { title: 'Phishing Detection', desc: 'Pattern recognition engine' },
-            { title: 'Link Analysis', desc: 'Sandbox URL testing' },
-          ].map((item, index) => (
-            <div
-              key={index}
-              className="p-4 bg-gray-50 border border-gray-200 rounded-lg text-center"
-            >
-              <div className="font-semibold text-gray-900 mb-1">{item.title}</div>
-              <div className="text-sm text-gray-600">{item.desc}</div>
+          <div className="bg-slate-900 rounded-[2rem] p-10 text-white relative overflow-hidden group">
+            <div className="absolute top-0 left-0 w-full h-full opacity-20 pointer-events-none">
+              <div className="absolute top-[-20%] right-[-20%] w-[60%] h-[60%] bg-blue-500 rounded-full blur-[80px] group-hover:scale-110 transition-transform duration-700" />
             </div>
-          ))}
-        </motion.div>
+            <div className="relative z-10">
+              <h3 className="text-xl font-bold mb-3">Enterprise Protection</h3>
+              <p className="text-slate-400 mb-8 leading-relaxed">Get real-time protection for your entire organization's inbox.</p>
+              <button className="w-full bg-white text-slate-900 py-4 rounded-xl font-bold hover:bg-slate-100 transition-colors">
+                Contact Sales
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
+
+const FeatureItem = ({ icon: Icon, title, desc, color }) => (
+  <div className="flex gap-4">
+    <div className={`${color} flex-shrink-0`}>
+      <Icon className="w-6 h-6" />
+    </div>
+    <div>
+      <div className="font-semibold text-slate-900">{title}</div>
+      <div className="text-sm text-slate-500">{desc}</div>
+    </div>
+  </div>
+);
 
 export default AnalyzerPage;
